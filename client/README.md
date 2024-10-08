@@ -12,4 +12,5 @@ To run the app use command:
 
 `npm run dev`
 
-And for this part of the app that would be all. Server side requires a bit more setup. For more information follow the corresponding readme file.
+And for this part of the app that would be all!. I hope you'll enjoy using this application!
+Server application requires a bit more setup. For more information follow the corresponding readme file.

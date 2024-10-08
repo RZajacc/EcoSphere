@@ -1,11 +1,11 @@
 # EcoSphere
 
-> [!WARNING]
-> Project is currently under construction so most of those functionalities are still yet to come.
-
 ### Description
 
 This project is made for people interested in knowing some more about sustainable living, and willing to meet like minded people on some meetups, or workshops. It also allows organizations to publish, and manage all those events.
+
+> [!WARNING]
+> Project is currently under construction so most of those functionalities are still yet to come.
 
 ### Tech Stack
 

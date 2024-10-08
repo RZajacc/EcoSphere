@@ -22,3 +22,5 @@ After running the app all relevant tables will be created.
 And that should be all! To run the app use command:
 
 `npm run start`
+
+And thats it! I hope you'll enjoy using this application!
