@@ -38,8 +38,8 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         //   Make a db query
         const result = yield db.query("SELECT * FROM users");
-        //   Check if query returned something and if yes return data
-        if (result && result.rowCount) {
+        //   Check if query returned data that is not empty array
+        if (result && result.rowCount && result.rowCount > 0) {
             res.status(200).json({
                 msg: "Getting all users",
                 result: result.rows,
@@ -48,7 +48,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             res.status(404).json({
-                msg: "No users found",
+                msg: "No users found in the database",
             });
         }
     }

@@ -6,8 +6,8 @@ export const getAllUsers: RequestHandler = async (req, res) => {
   try {
     //   Make a db query
     const result: QueryResult | void = await db.query("SELECT * FROM users");
-    //   Check if query returned something and if yes return data
-    if (result && result.rowCount) {
+    //   Check if query returned data that is not empty array
+    if (result && result.rowCount && result.rowCount > 0) {
       res.status(200).json({
         msg: "Getting all users",
         result: result.rows,
@@ -15,7 +15,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
       // If not return simple error message
     } else {
       res.status(404).json({
-        msg: "No users found",
+        msg: "No users found in the database",
       });
     }
   } catch (error) {

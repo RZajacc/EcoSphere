@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,6 +41,37 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const { Pool } = pg_1.default;
 const pool = new Pool();
+// Create tables
+const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS users( 
+      user_id INT GENERATED ALWAYS AS IDENTITY,
+      user_name VARCHAR(50) NOT NULL,
+      email VARCHAR(50) NOT NULL,
+      PRIMARY KEY(user_id)
+    );
+    CREATE TABLE IF NOT EXISTS events (
+	    event_id INT GENERATED ALWAYS AS IDENTITY,
+	    user_id INT,
+	    title VARCHAR(100) NOT NULL,
+	    description TEXT NOT NULL,
+	    PRIMARY KEY(event_id)
+    );
+  `;
+    // Timing function for feedback
+    const start = Date.now();
+    const result = yield pool.query(queryText);
+    const duration = Date.now() - start;
+    // If result returned something print feedback to the console
+    if (result) {
+        console.log("Successfully executed provided query in", duration, "ms");
+    }
+    else {
+        console.log("Something went wrong while building tables");
+    }
+});
+createTables();
+// Export query function for controller methods
 const query = (text, params, callback) => {
     // Both params and callback provided
     if (params && callback) {
