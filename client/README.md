@@ -1,15 +1,15 @@
-## Getting Started
+# Client
 
-First, run the development server:
+Client side of the application doesnt require any specific configuration. All you need is to install all dependencies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Project requirements:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To install all dependencies use a command:
+
+`npm i`
+
+To run the app use command:
+
+`npm run dev`
+
+And for this part of the app that would be all. Server side requires a bit more setup. For more information follow the corresponding readme file.
