@@ -2,21 +2,23 @@
 import Link from "next/link";
 import SearchBar from "../ui/SearchBar";
 import HamburgerButton from "../ui/HamburgerButton";
-import SideNav from "./SideNav";
+import SideBar from "./SideBar";
+import { useState } from "react";
 
 function NavMobile() {
+  const [sideBarActive, setSideBarActive] = useState(false);
   return (
     <>
-      <div className="block sm:hidden py-4">
-        <section className="justify-between items-center flex">
+      <div className="py-4 sm:hidden">
+        <section className="flex items-center justify-between">
           <HamburgerButton
             onClickHandler={() => {
-              console.log("Clicked");
+              setSideBarActive(true);
             }}
           />
           <Link
             href={"/"}
-            className="text-xl mr-7 text-emerald-500 font-serif italic tracking-wider"
+            className="mr-7 font-serif text-xl italic tracking-wider text-emerald-500"
           >
             EcoSphere
           </Link>
@@ -25,7 +27,10 @@ function NavMobile() {
           <SearchBar />
         </section>
       </div>
-      <SideNav />
+      <SideBar
+        sideBarActive={sideBarActive}
+        setSideBarActive={setSideBarActive}
+      />
     </>
   );
 }

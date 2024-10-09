@@ -1,15 +1,15 @@
 import Image from "next/image";
-import magnifyingGlass from "../../assets/magnifying-glass-backup-svgrepo-com.svg";
+import magnifyingGlass from "@/assets/magnifying-glass-backup-svgrepo-com.svg";
 
 function SearchBar() {
   return (
-    <div className="border border-zinc-400  flex rounded-lg focus-within:border-zinc-900 max-w-72 mx-auto">
+    <div className="mx-auto flex max-w-72 rounded-lg border border-zinc-400 focus-within:border-zinc-900">
       <input
         type="text"
         placeholder="Search by city"
-        className="outline-none pl-2 rounded-l-lg w-full"
+        className="w-full rounded-l-lg pl-2 outline-none"
       />
-      <button className="bg-rose-500 p-1 rounded-r-lg">
+      <button className="rounded-r-lg bg-rose-500 p-1">
         <Image src={magnifyingGlass} alt="Magnifying glass image" width={25} />
       </button>
     </div>
