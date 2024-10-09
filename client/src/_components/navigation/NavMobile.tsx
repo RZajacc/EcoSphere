@@ -2,6 +2,7 @@
 import Link from "next/link";
 import SearchBar from "../ui/SearchBar";
 import HamburgerButton from "../ui/HamburgerButton";
+import SideNav from "./SideNav";
 
 function NavMobile() {
   return (
@@ -24,6 +25,7 @@ function NavMobile() {
           <SearchBar />
         </section>
       </div>
+      <SideNav />
     </>
   );
 }
