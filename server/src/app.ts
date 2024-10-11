@@ -1,5 +1,6 @@
 import express from "express";
 import userRoutes from "./routes/userRoutes";
+import eventRoutes from "./routes/eventRoutes";
 
 // Create an app
 const app = express();
@@ -9,6 +10,7 @@ app.use(express.json());
 
 // Add routes
 app.use("/users", userRoutes);
+app.use("/events", eventRoutes);
 
 // Select the right port to run the application
 const port = process.env.PORT || 5000;
