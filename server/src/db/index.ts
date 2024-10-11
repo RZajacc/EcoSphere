@@ -14,12 +14,23 @@ const createTables = async () => {
       email VARCHAR(50) NOT NULL,
       PRIMARY KEY(user_id)
     );
-    CREATE TABLE IF NOT EXISTS events (
+     CREATE TABLE IF NOT EXISTS events (
 	    event_id INT GENERATED ALWAYS AS IDENTITY,
-	    user_id INT,
 	    title VARCHAR(100) NOT NULL,
+	    user_id INT,
 	    description TEXT NOT NULL,
-	    PRIMARY KEY(event_id)
+	    date TIMESTAMPTZ,
+	    adress VARCHAR(255),
+	    PRIMARY KEY(event_id),
+	    CONSTRAINT fk_user
+		    FOREIGN KEY (user_id)
+			    REFERENCES users (user_id)
+    );
+    CREATE TABLE IF NOT EXISTS users_events (
+	    user_id INT REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	    event_id INT REFERENCES events (event_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	    CONSTRAINT user_events_pk
+		    PRIMARY KEY (user_id, event_id)	
     );
   `;
   // Timing function for feedback
