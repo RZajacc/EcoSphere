@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type eventType = {
   event_id: number;
   title: string;
@@ -5,12 +7,14 @@ type eventType = {
   description: string;
   date: string;
   adress: string;
+  imageurl: string;
 };
 
 export default async function Home() {
   const response = await fetch("http://localhost:5000/events/getAllEvents", {
     method: "GET",
     redirect: "follow",
+    cache: "no-store",
   });
   if (!response.ok) {
     throw Error("Something went wrong");
