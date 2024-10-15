@@ -1,3 +1,4 @@
+import DateFormatter from "@/utils/DateFormatter";
 import Image from "next/image";
 import React from "react";
 
@@ -9,40 +10,9 @@ type Props = {
 };
 
 function EventItem({ imageUrl, date, title, adress }: Props) {
-  const displayDate = new Date(date);
-  const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  const months = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
-  const [day, month, eventDate, hours, minutes] = [
-    displayDate.getDay(),
-    displayDate.getMonth(),
-    displayDate.getDate().toString(),
-    displayDate.getHours().toString(),
-    displayDate.getMinutes().toString(),
-  ];
-  const fullMinutes = minutes === "0" ? "00" : minutes;
-  const dateToDisplay =
-    weekdays[day] +
-    "," +
-    months[month] +
-    " " +
-    eventDate +
-    " • " +
-    hours +
-    ":" +
-    fullMinutes;
+  // Get preformatted date from timestamp
+  const dateToDisplay = DateFormatter(date);
+
   return (
     <div>
       <section>
