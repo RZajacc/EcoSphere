@@ -1,3 +1,4 @@
+import EventItem from "@/_components/user_events/EventItem";
 import Image from "next/image";
 
 type eventType = {
@@ -14,22 +15,33 @@ export default async function Home() {
   const response = await fetch("http://localhost:5000/events/getAllEvents", {
     method: "GET",
     redirect: "follow",
-    cache: "no-store",
+    next: {
+      revalidate: 60,
+    },
   });
+
   if (!response.ok) {
     throw Error("Something went wrong");
   }
 
   const eventData: { result: eventType[] } = await response.json();
   return (
-    <div>
+    <div className="mx-auto max-w-lg">
       <h1>Ecosphere home</h1>
-      <ul>
+      <div className="grid gap-1">
         {eventData &&
           eventData.result.map((event) => {
-            return <li key={event.event_id}>{event.title}</li>;
+            return (
+              <EventItem
+                key={event.event_id}
+                imageUrl={event.imageurl}
+                date={event.date}
+                title={event.title}
+                adress={event.adress}
+              />
+            );
           })}
-      </ul>
+      </div>
     </div>
   );
 }
