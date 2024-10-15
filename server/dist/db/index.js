@@ -55,8 +55,9 @@ const createTables = () => __awaiter(void 0, void 0, void 0, function* () {
 	    title VARCHAR(100) NOT NULL,
 	    user_id INT,
 	    description TEXT NOT NULL,
-	    date TIMESTAMPTZ,
-	    adress VARCHAR(255),
+	    date TIMESTAMPTZ NOT NULL,
+	    adress VARCHAR(255) NOT NULL,
+		  imageurl TEXT NOT NULL,
 	    PRIMARY KEY(event_id),
 	    CONSTRAINT fk_user
 		    FOREIGN KEY (user_id)
