@@ -19,6 +19,31 @@ footer {
   grid-area: footer;
 }
 
+.event {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-areas:
+    "image image date date date date date date"
+    "image image title title title title title title"
+    "image image adress adress adress adress adress adress";
+}
+
+.event_image {
+  grid-area: image;
+}
+
+.event_date {
+  grid-area: date;
+}
+
+.event_title {
+  grid-area: title;
+}
+
+.event_adress {
+  grid-area: adress;
+}
+
 @media (min-width: 640px) {
   body {
     grid-template-rows: 64px auto 84px;
