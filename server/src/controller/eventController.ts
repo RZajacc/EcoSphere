@@ -5,7 +5,9 @@ import { QueryResult } from "pg";
 export const getAllEvents: RequestHandler = async (req, res) => {
   try {
     //   Make a db query
-    const result: QueryResult | void = await db.query("SELECT * FROM events");
+    const result: QueryResult | void = await db.query(
+      "SELECT * FROM events ORDER BY date"
+    );
     //   Check if query returned data that is not empty array
     if (result && result.rowCount && result.rowCount > 0) {
       res.status(200).json({

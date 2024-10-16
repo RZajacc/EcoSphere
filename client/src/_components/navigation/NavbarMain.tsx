@@ -4,7 +4,7 @@ import NavMobile from "./NavMobile";
 function NavbarMain() {
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full">
+      <nav className="fixed left-0 top-0 z-10 w-full bg-white">
         {/* Desktop navigation */}
         <NavDesktop />
         {/* Mobile navigation */}

@@ -37,7 +37,7 @@ const db = __importStar(require("../db/index"));
 const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //   Make a db query
-        const result = yield db.query("SELECT * FROM events");
+        const result = yield db.query("SELECT * FROM events ORDER BY date");
         //   Check if query returned data that is not empty array
         if (result && result.rowCount && result.rowCount > 0) {
             res.status(200).json({
