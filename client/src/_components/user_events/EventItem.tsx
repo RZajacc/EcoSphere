@@ -15,12 +15,16 @@ function EventItem({ imageUrl, date, title, adress }: Props) {
 
   return (
     <div className="event">
-      <section className="event_image">
-        <Image src={imageUrl} alt={title} width={100} height={100} />
+      <section className="event_image relative">
+        <Image src={imageUrl} alt={title} fill className="rounded-lg p-2" />
       </section>
-      <p className="event_date">{dateToDisplay}</p>
-      <h1 className="event_title">{title}</h1>
-      <p className="event_adress">{adress}</p>
+      <section className="event_date content-end font-semibold text-gray-500">
+        {dateToDisplay}
+      </section>
+      <div className="event_title text-lg font-semibold">{title}</div>
+      <p className="event_adress text-sm font-semibold text-gray-400">
+        {adress}
+      </p>
     </div>
   );
 }

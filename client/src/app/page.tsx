@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <div className="mx-auto max-w-lg">
       <h1>Ecosphere home</h1>
-      <div className="grid gap-1">
+      <div className="grid gap-3">
         {eventData &&
           eventData.result.map((event) => {
             return (
