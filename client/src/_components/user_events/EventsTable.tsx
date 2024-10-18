@@ -3,46 +3,24 @@ import useSWR from "swr";
 import { weekdaysLong } from "../../../lib/other/DaysArray";
 import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
+import { eventType } from "../../../types/EventTypes";
+import { useEvents } from "../../../lib/utils/useUser";
 
 function EventsTable() {
+  // Variables necessary for proper display
   let prevMonth: number | null = null;
   let prevDay: number | null = null;
   const dateToday = new Date();
   const monthToday = dateToday.getMonth();
+  // Data fetching method
   const dayToday = dateToday.getDay();
-  const getUserData = async (url: string) => {
-    const response = await fetch(url, {
-      method: "GET",
-      redirect: "follow",
-    });
 
-    console.log(response);
-    if (!response.ok) {
-      throw Error("Something went wrong");
-    }
+  const { eventsData } = useEvents();
 
-    return response.json();
-  };
-
-  const { data } = useSWR(
-    "http://localhost:5000/events/getAllEvents",
-    getUserData,
-  );
-  console.log("SWR DATA", data);
-  // const response = await fetch("http://localhost:5000/events/getAllEvents", {
-  //   method: "GET",
-  //   redirect: "follow",
-  // });
-
-  // if (!response.ok) {
-  //   throw Error("Something went wrong");
-  // }
-
-  // const eventData: { result: eventType[] } = await response.json();
   return (
     <>
-      {/* {eventsData &&
-        eventsData.map((event) => {
+      {eventsData &&
+        eventsData.result.map((event) => {
           const currentMonth = new Date(event.date).getMonth();
           const currentDay = new Date(event.date).getDay();
           const currentDate = new Date(event.date).getDate();
@@ -82,7 +60,7 @@ function EventsTable() {
               </>
             );
           }
-        })} */}
+        })}
     </>
   );
 }
