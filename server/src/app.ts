@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import userRoutes from "./routes/userRoutes";
 import eventRoutes from "./routes/eventRoutes";
 
@@ -7,6 +8,7 @@ const app = express();
 
 // Add middlewares
 app.use(express.json());
+app.use(cors());
 
 // Add routes
 app.use("/users", userRoutes);

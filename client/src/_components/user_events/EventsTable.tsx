@@ -1,3 +1,5 @@
+"use client";
+import useSWR from "swr";
 import { weekdaysLong } from "../../../lib/other/DaysArray";
 import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
@@ -8,10 +10,38 @@ function EventsTable() {
   const dateToday = new Date();
   const monthToday = dateToday.getMonth();
   const dayToday = dateToday.getDay();
+  const getUserData = async (url: string) => {
+    const response = await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+    });
 
+    console.log(response);
+    if (!response.ok) {
+      throw Error("Something went wrong");
+    }
+
+    return response.json();
+  };
+
+  const { data } = useSWR(
+    "http://localhost:5000/events/getAllEvents",
+    getUserData,
+  );
+  console.log("SWR DATA", data);
+  // const response = await fetch("http://localhost:5000/events/getAllEvents", {
+  //   method: "GET",
+  //   redirect: "follow",
+  // });
+
+  // if (!response.ok) {
+  //   throw Error("Something went wrong");
+  // }
+
+  // const eventData: { result: eventType[] } = await response.json();
   return (
     <>
-      {eventsData &&
+      {/* {eventsData &&
         eventsData.map((event) => {
           const currentMonth = new Date(event.date).getMonth();
           const currentDay = new Date(event.date).getDay();
@@ -52,7 +82,7 @@ function EventsTable() {
               </>
             );
           }
-        })}
+        })} */}
     </>
   );
 }
