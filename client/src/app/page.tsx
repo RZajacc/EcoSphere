@@ -1,29 +1,16 @@
 import EventsTable from "@/_components/user_events/EventsTable";
 
-export type eventType = {
-  event_id: number;
-  title: string;
-  user_id: number;
-  description: string;
-  date: string;
-  adress: string;
-  imageurl: string;
-};
-
 export default async function Home() {
-  const response = await fetch("http://localhost:5000/events/getAllEvents", {
-    method: "GET",
-    redirect: "follow",
-    next: {
-      revalidate: 60,
-    },
-  });
+  // const response = await fetch("http://localhost:5000/events/getAllEvents", {
+  //   method: "GET",
+  //   redirect: "follow",
+  // });
 
-  if (!response.ok) {
-    throw Error("Something went wrong");
-  }
+  // if (!response.ok) {
+  //   throw Error("Something went wrong");
+  // }
 
-  const eventData: { result: eventType[] } = await response.json();
+  // const eventData: { result: eventType[] } = await response.json();
 
   return (
     <div className="mx-auto mb-7 mt-7 max-w-2xl">
@@ -33,7 +20,7 @@ export default async function Home() {
         <input type="date" className="rounded-lg border border-gray-400 p-1" />
       </div>
       <div className="grid gap-2">
-        <EventsTable eventsData={eventData.result} />
+        <EventsTable />
       </div>
     </div>
   );

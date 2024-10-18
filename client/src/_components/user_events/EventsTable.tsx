@@ -1,39 +1,13 @@
-import { eventType } from "@/app/page";
+import { weekdaysLong } from "../../../lib/other/DaysArray";
+import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
 
-type Props = {
-  eventsData: eventType[];
-};
-
-function EventsTable({ eventsData }: Props) {
+function EventsTable() {
   let prevMonth: number | null = null;
   let prevDay: number | null = null;
   const dateToday = new Date();
   const monthToday = dateToday.getMonth();
   const dayToday = dateToday.getDay();
-  const weekdays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   return (
     <>
@@ -61,9 +35,9 @@ function EventsTable({ eventsData }: Props) {
                 <h3 className="ml-1 text-lg font-semibold">
                   {currentDay === dayToday && currentMonth === monthToday
                     ? "Today"
-                    : weekdays[currentDay] +
+                    : weekdaysLong[currentDay] +
                       ", " +
-                      months[currentMonth] +
+                      monthsLong[currentMonth] +
                       " " +
                       currentDate}
                 </h3>

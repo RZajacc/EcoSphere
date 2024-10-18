@@ -1,20 +1,9 @@
+import { weekdaysShort } from "./DaysArray";
+import { monthsShort } from "./MonthsArray";
+
 export default function DateFormatter(timestamp: string) {
   const displayDate = new Date(timestamp);
-  const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  const months = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
+
   const [day, month, eventDate, hours, minutes] = [
     displayDate.getDay(),
     displayDate.getMonth(),
@@ -24,9 +13,9 @@ export default function DateFormatter(timestamp: string) {
   ];
   const fullMinutes = minutes === "0" ? "00" : minutes;
   const dateToDisplay =
-    weekdays[day] +
+    weekdaysShort[day] +
     "," +
-    months[month] +
+    monthsShort[month] +
     " " +
     eventDate +
     " • " +

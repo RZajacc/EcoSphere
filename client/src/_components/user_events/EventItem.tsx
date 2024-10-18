@@ -1,4 +1,4 @@
-import DateFormatter from "@/utils/DateFormatter";
+import DateFormatter from "../../../lib/other/DateFormatter";
 import Image from "next/image";
 import React from "react";
 
