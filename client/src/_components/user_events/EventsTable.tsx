@@ -5,6 +5,7 @@ import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
 import { eventType } from "../../../types/EventTypes";
 import { useEvents } from "../../../lib/utils/useUser";
+import { useState } from "react";
 
 function EventsTable() {
   // Variables necessary for proper display
@@ -12,13 +13,24 @@ function EventsTable() {
   let prevDay: number | null = null;
   const dateToday = new Date();
   const monthToday = dateToday.getMonth();
-  // Data fetching method
   const dayToday = dateToday.getDay();
-
+  // Data fetching method
   const { eventsData } = useEvents();
+  // Date from the calendar input
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   return (
     <>
+      <div className="mb-5 flex items-center justify-center gap-3">
+        <p className="font-semibold">Select date:</p>
+        <input
+          type="date"
+          className="rounded-lg border border-gray-400 p-1"
+          onChange={(e) => {
+            setSelectedDate(e.target.value);
+          }}
+        />
+      </div>
       {eventsData &&
         eventsData.result.map((event) => {
           const currentMonth = new Date(event.date).getMonth();

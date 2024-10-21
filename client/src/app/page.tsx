@@ -4,10 +4,6 @@ export default async function Home() {
   return (
     <div className="mx-auto mb-7 mt-7 max-w-2xl">
       <h1 className="mb-3 text-center text-2xl font-bold">All events:</h1>
-      <div className="mb-5 flex items-center justify-center gap-3">
-        <p className="font-semibold">Select date:</p>
-        <input type="date" className="rounded-lg border border-gray-400 p-1" />
-      </div>
       <div className="grid gap-2">
         <EventsTable />
       </div>
