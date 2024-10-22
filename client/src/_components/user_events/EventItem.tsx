@@ -16,7 +16,14 @@ function EventItem({ imageUrl, date, title, adress }: Props) {
   return (
     <div className="event">
       <section className="event_image relative">
-        <Image src={imageUrl} alt={title} fill className="rounded-lg p-2" />
+        <Image
+          src={imageUrl}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px)"
+          priority={true}
+          className="rounded-lg p-2"
+        />
       </section>
       <section className="event_date content-end font-semibold text-gray-500">
         {dateToDisplay}
