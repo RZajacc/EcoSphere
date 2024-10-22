@@ -1,9 +1,8 @@
 "use client";
-import useSWR from "swr";
+import React from "react";
 import { weekdaysLong } from "../../../lib/other/DaysArray";
 import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
-import { eventType } from "../../../types/EventTypes";
 import { useEvents } from "../../../lib/utils/useUser";
 import { useState } from "react";
 
@@ -51,7 +50,7 @@ function EventsTable() {
             prevMonth = currentMonth;
             prevDay = currentDay;
             return (
-              <>
+              <React.Fragment key={event.event_id}>
                 <h3 className="ml-1 text-lg font-semibold">
                   {currentDay === dayToday && currentMonth === monthToday
                     ? "Today"
@@ -63,13 +62,12 @@ function EventsTable() {
                 </h3>
                 <hr className="border-t border-zinc-700" />
                 <EventItem
-                  key={event.event_id}
                   imageUrl={event.imageurl}
                   date={event.date}
                   title={event.title}
                   adress={event.adress}
                 />
-              </>
+              </React.Fragment>
             );
           }
         })}
