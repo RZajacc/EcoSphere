@@ -5,6 +5,12 @@ import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
 import { useEvents } from "../../../lib/utils/useUser";
 import { useState } from "react";
+import "react-calendar/dist/Calendar.css";
+
+import Calendar from "react-calendar";
+
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 function EventsTable() {
   // Variables necessary for proper display
@@ -16,61 +22,60 @@ function EventsTable() {
   // Data fetching method
   const { eventsData } = useEvents();
   // Date from the calendar input
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [value, onChange] = useState<Value>(new Date());
 
   return (
     <>
-      <div className="mb-5 flex items-center justify-center gap-3">
-        <p className="font-semibold">Select date:</p>
-        <input
-          type="date"
-          className="rounded-lg border border-gray-400 p-1"
-          onChange={(e) => {
-            setSelectedDate(e.target.value);
-          }}
+      <div className="col-span-4">
+        <Calendar
+          onChange={onChange}
+          value={value}
+          className="rounded-lg p-2"
         />
       </div>
-      {eventsData &&
-        eventsData.result.map((event) => {
-          const currentMonth = new Date(event.date).getMonth();
-          const currentDay = new Date(event.date).getDay();
-          const currentDate = new Date(event.date).getDate();
+      <div className="col-span-8">
+        {eventsData &&
+          eventsData.result.map((event) => {
+            const currentMonth = new Date(event.date).getMonth();
+            const currentDay = new Date(event.date).getDay();
+            const currentDate = new Date(event.date).getDate();
 
-          if (prevMonth === currentMonth && prevDay === currentDay) {
-            return (
-              <EventItem
-                key={event.event_id}
-                imageUrl={event.imageurl}
-                date={event.date}
-                title={event.title}
-                adress={event.adress}
-              />
-            );
-          } else {
-            prevMonth = currentMonth;
-            prevDay = currentDay;
-            return (
-              <React.Fragment key={event.event_id}>
-                <h3 className="ml-1 text-lg font-semibold">
-                  {currentDay === dayToday && currentMonth === monthToday
-                    ? "Today"
-                    : weekdaysLong[currentDay] +
-                      ", " +
-                      monthsLong[currentMonth] +
-                      " " +
-                      currentDate}
-                </h3>
-                <hr className="border-t border-zinc-700" />
+            if (prevMonth === currentMonth && prevDay === currentDay) {
+              return (
                 <EventItem
+                  key={event.event_id}
                   imageUrl={event.imageurl}
                   date={event.date}
                   title={event.title}
                   adress={event.adress}
                 />
-              </React.Fragment>
-            );
-          }
-        })}
+              );
+            } else {
+              prevMonth = currentMonth;
+              prevDay = currentDay;
+              return (
+                <React.Fragment key={event.event_id}>
+                  <h3 className="ml-1 text-lg font-semibold">
+                    {currentDay === dayToday && currentMonth === monthToday
+                      ? "Today"
+                      : weekdaysLong[currentDay] +
+                        ", " +
+                        monthsLong[currentMonth] +
+                        " " +
+                        currentDate}
+                  </h3>
+                  <hr className="border-t border-zinc-700" />
+                  <EventItem
+                    imageUrl={event.imageurl}
+                    date={event.date}
+                    title={event.title}
+                    adress={event.adress}
+                  />
+                </React.Fragment>
+              );
+            }
+          })}
+      </div>
     </>
   );
 }
