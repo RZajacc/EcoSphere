@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllEvents = void 0;
+exports.getAllEventsByDate = exports.getAllEvents = void 0;
 const db = __importStar(require("../db/index"));
 const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -56,4 +56,11 @@ const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllEvents = getAllEvents;
-exports.default = { getAllEvents: exports.getAllEvents };
+const getAllEventsByDate = (req, res) => {
+    const inputs = req.body;
+    res.status(200).json({
+        inputs,
+    });
+};
+exports.getAllEventsByDate = getAllEventsByDate;
+exports.default = { getAllEvents: exports.getAllEvents, getAllEventsByDate: exports.getAllEventsByDate };

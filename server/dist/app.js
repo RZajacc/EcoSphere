@@ -11,6 +11,7 @@ const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
 const app = (0, express_1.default)();
 // Add middlewares
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 // Add routes
 app.use("/users", userRoutes_1.default);
