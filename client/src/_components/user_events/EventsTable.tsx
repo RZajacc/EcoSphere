@@ -26,14 +26,15 @@ function EventsTable() {
 
   return (
     <>
-      <div className="col-span-4">
+      <div className="mx-auto md:col-span-4 md:mx-0">
         <Calendar
           onChange={onChange}
           value={value}
           className="rounded-lg p-2"
+          locale="en-GB"
         />
       </div>
-      <div className="col-span-8">
+      <div className="md:col-span-8">
         {eventsData &&
           eventsData.result.map((event) => {
             const currentMonth = new Date(event.date).getMonth();
