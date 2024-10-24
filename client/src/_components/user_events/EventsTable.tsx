@@ -3,7 +3,7 @@ import React from "react";
 import { weekdaysLong } from "../../../lib/other/DaysArray";
 import { monthsLong } from "../../../lib/other/MonthsArray";
 import EventItem from "./EventItem";
-import { useEvents } from "../../../lib/utils/useUser";
+import { useEvents } from "../../../lib/utils/useEvents";
 import { useState } from "react";
 import "react-calendar/dist/Calendar.css";
 
@@ -19,10 +19,10 @@ function EventsTable() {
   const dateToday = new Date();
   const monthToday = dateToday.getMonth();
   const dayToday = dateToday.getDay();
-  // Data fetching method
-  const { eventsData } = useEvents();
   // Date from the calendar input
   const [value, onChange] = useState<Value>(new Date());
+  // Data fetching method
+  const { eventsData } = useEvents(value ? value.toLocaleString() : "");
 
   return (
     <>
