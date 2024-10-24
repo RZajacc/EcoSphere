@@ -7,3 +7,12 @@ export type eventType = {
   adress: string;
   imageurl: string;
 };
+
+export type eventDetails = {
+  user_name: string;
+  title: string;
+  description: string;
+  date: string;
+  adress: string;
+  imageurl: string;
+};

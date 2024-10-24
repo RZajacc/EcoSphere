@@ -31,15 +31,17 @@ export const getEventByTitle: RequestHandler = async (req, res) => {
     const result: QueryResult | void = await db.query(`
       SELECT 
 	      u.user_name,
-	      u.email,
 	      e.title,
-	      e.description
+	      e.description,
+        e.date,
+        e.adress,
+        e.imageurl
       FROM events e
       JOIN users u ON u.user_id = e.user_id 
       WHERE title = '${inputs.title}'`);
 
     if (result && result.rowCount && result.rowCount > 0) {
-      res.status(200).json({ result: result.rows });
+      res.status(200).json(result.rows[0]);
     } else {
       res.status(404).json({
         msg: "Could not find entry with provided title",
