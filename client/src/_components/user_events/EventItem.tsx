@@ -1,5 +1,6 @@
 import DateFormatter from "../../../lib/other/DateFormatter";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -14,7 +15,10 @@ function EventItem({ imageUrl, date, title, adress }: Props) {
   const dateToDisplay = DateFormatter(date);
 
   return (
-    <div className="event">
+    <Link
+      className="event rounded-sm transition-colors duration-500 hover:cursor-pointer hover:bg-zinc-100"
+      href={`/eventDetails/${title}`}
+    >
       <section className="event_image relative">
         <Image
           src={imageUrl}
@@ -32,7 +36,7 @@ function EventItem({ imageUrl, date, title, adress }: Props) {
       <p className="event_adress text-sm font-semibold text-gray-400">
         {adress}
       </p>
-    </div>
+    </Link>
   );
 }
 
