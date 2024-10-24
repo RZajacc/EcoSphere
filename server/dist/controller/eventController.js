@@ -56,11 +56,26 @@ const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllEvents = getAllEvents;
-const getAllEventsByDate = (req, res) => {
+const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Getting inputs from the request
     const inputs = req.body;
-    res.status(200).json({
-        inputs,
-    });
-};
+    try {
+        // DB Query
+        const result = yield db.query(`SELECT * FROM events WHERE date >='${inputs.date}' ORDER BY date`);
+        if (result && result.rowCount && result.rowCount > 0) {
+            res.status(200).json({
+                result: result.rows,
+            });
+        }
+        else {
+            res.status(404).json({
+                msg: "No entries foun",
+            });
+        }
+    }
+    catch (error) {
+        res.status(500).json("ERROR occured");
+    }
+});
 exports.getAllEventsByDate = getAllEventsByDate;
 exports.default = { getAllEvents: exports.getAllEvents, getAllEventsByDate: exports.getAllEventsByDate };
