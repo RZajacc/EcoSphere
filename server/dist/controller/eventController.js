@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllEventsByDate = void 0;
+exports.getEventByTitle = exports.getAllEventsByDate = void 0;
 const db = __importStar(require("../db/index"));
 const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Getting inputs from the request
@@ -56,4 +56,30 @@ const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getAllEventsByDate = getAllEventsByDate;
-exports.default = { getAllEventsByDate: exports.getAllEventsByDate };
+const getEventByTitle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const inputs = req.body;
+    try {
+        const result = yield db.query(`
+      SELECT 
+	      u.user_name,
+	      u.email,
+	      e.title,
+	      e.description
+      FROM events e
+      JOIN users u ON u.user_id = e.user_id 
+      WHERE title = '${inputs.title}'`);
+        if (result && result.rowCount && result.rowCount > 0) {
+            res.status(200).json({ result: result.rows });
+        }
+        else {
+            res.status(404).json({
+                msg: "Could not find entry with provided title",
+            });
+        }
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
+});
+exports.getEventByTitle = getEventByTitle;
+exports.default = { getAllEventsByDate: exports.getAllEventsByDate, getEventByTitle: exports.getEventByTitle };
