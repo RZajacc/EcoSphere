@@ -32,30 +32,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllEventsByDate = exports.getAllEvents = void 0;
+exports.getAllEventsByDate = void 0;
 const db = __importStar(require("../db/index"));
-const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //   Make a db query
-        const result = yield db.query("SELECT * FROM events ORDER BY date");
-        //   Check if query returned data that is not empty array
-        if (result && result.rowCount && result.rowCount > 0) {
-            res.status(200).json({
-                result: result.rows,
-            });
-            // If not return simple error message
-        }
-        else {
-            res.status(404).json({
-                msg: "No users found in the database",
-            });
-        }
-    }
-    catch (error) {
-        res.status(500).json(error);
-    }
-});
-exports.getAllEvents = getAllEvents;
 const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Getting inputs from the request
     const inputs = req.body;
@@ -78,4 +56,4 @@ const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getAllEventsByDate = getAllEventsByDate;
-exports.default = { getAllEvents: exports.getAllEvents, getAllEventsByDate: exports.getAllEventsByDate };
+exports.default = { getAllEventsByDate: exports.getAllEventsByDate };
