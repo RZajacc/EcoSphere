@@ -31,8 +31,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = void 0;
+exports.signup = exports.getAllUsers = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = __importStar(require("../db/index"));
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -57,4 +61,30 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getAllUsers = getAllUsers;
-exports.default = { getAllUsers: exports.getAllUsers };
+const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const inputs = req.body;
+    // Bcrypt config
+    const saltRounds = 10;
+    bcrypt_1.default.hash(inputs.password, saltRounds, (err, hash) => {
+        // If hashing fails return an error
+        if (err) {
+            res.status(500).json({
+                msg: "Error while hashing the password",
+            });
+        }
+        // If theres no error store new user in the database
+        try {
+        }
+        catch (error) {
+            res.status(500).json({
+                msg: "Something went wrong while saving a user in the database",
+            });
+        }
+        res.status(200).json({
+            password: inputs.password,
+            hashedPassword: hash,
+        });
+    });
+});
+exports.signup = signup;
+exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup };

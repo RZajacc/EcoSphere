@@ -12,6 +12,7 @@ const createTables = async () => {
       user_id INT GENERATED ALWAYS AS IDENTITY,
       user_name VARCHAR(50) NOT NULL,
       email VARCHAR(50) NOT NULL,
+      password TEXT NOT NULL,
       PRIMARY KEY(user_id)
     );
      CREATE TABLE IF NOT EXISTS events (
