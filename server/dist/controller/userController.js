@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signup = exports.getAllUsers = void 0;
+exports.login = exports.signup = exports.getAllUsers = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = __importStar(require("../db/index"));
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -96,4 +96,14 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }));
 });
 exports.signup = signup;
-exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup };
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const inputs = req.body;
+    const result = yield db.query(`SELECT * FROM users WHERE email = '${inputs.email}'`);
+    if (result) {
+        bcrypt_1.default.compare(inputs.password, result.rows[0].password, (err, result) => {
+            console.log("PASSWORD COMPARE", result);
+        });
+    }
+});
+exports.login = login;
+exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup, login: exports.login };

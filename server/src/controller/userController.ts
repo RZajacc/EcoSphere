@@ -63,4 +63,18 @@ export const signup: RequestHandler = async (req, res) => {
   });
 };
 
-export default { getAllUsers, signup };
+export const login: RequestHandler = async (req, res) => {
+  const inputs: { email: string; password: string } = req.body;
+
+  const result = await db.query(
+    `SELECT * FROM users WHERE email = '${inputs.email}'`
+  );
+
+  if (result) {
+    bcrypt.compare(inputs.password, result.rows[0].password, (err, result) => {
+      console.log("PASSWORD COMPARE", result);
+    });
+  }
+};
+
+export default { getAllUsers, signup, login };
