@@ -65,26 +65,35 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const inputs = req.body;
     // Bcrypt config
     const saltRounds = 10;
-    bcrypt_1.default.hash(inputs.password, saltRounds, (err, hash) => {
+    // Hash password and store new user in database
+    bcrypt_1.default.hash(inputs.password, saltRounds, (err, hash) => __awaiter(void 0, void 0, void 0, function* () {
         // If hashing fails return an error
         if (err) {
             res.status(500).json({
                 msg: "Error while hashing the password",
             });
         }
-        // If theres no error store new user in the database
+        // If theres no error, store new user in the database
         try {
+            const result = yield db.query(`INSERT INTO users (user_name, email, password) VALUES ('${inputs.userName}', '${inputs.email}', '${hash}')`);
+            // If query was successfull return a message
+            if (result) {
+                res.status(200).json({
+                    msg: "New user added to the database",
+                });
+            }
+            else {
+                res.status(404).json({
+                    msg: "Something went wront while adding a user",
+                });
+            }
         }
         catch (error) {
             res.status(500).json({
                 msg: "Something went wrong while saving a user in the database",
             });
         }
-        res.status(200).json({
-            password: inputs.password,
-            hashedPassword: hash,
-        });
-    });
+    }));
 });
 exports.signup = signup;
 exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup };

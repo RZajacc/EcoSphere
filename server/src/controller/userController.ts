@@ -31,7 +31,8 @@ export const signup: RequestHandler = async (req, res) => {
   // Bcrypt config
   const saltRounds = 10;
 
-  bcrypt.hash(inputs.password, saltRounds, (err, hash) => {
+  // Hash password and store new user in database
+  bcrypt.hash(inputs.password, saltRounds, async (err, hash) => {
     // If hashing fails return an error
     if (err) {
       res.status(500).json({
@@ -39,18 +40,26 @@ export const signup: RequestHandler = async (req, res) => {
       });
     }
 
-    // If theres no error store new user in the database
+    // If theres no error, store new user in the database
     try {
+      const result: QueryResult | void = await db.query(
+        `INSERT INTO users (user_name, email, password) VALUES ('${inputs.userName}', '${inputs.email}', '${hash}')`
+      );
+      // If query was successfull return a message
+      if (result) {
+        res.status(200).json({
+          msg: "New user added to the database",
+        });
+      } else {
+        res.status(404).json({
+          msg: "Something went wront while adding a user",
+        });
+      }
     } catch (error) {
       res.status(500).json({
         msg: "Something went wrong while saving a user in the database",
       });
     }
-
-    res.status(200).json({
-      password: inputs.password,
-      hashedPassword: hash,
-    });
   });
 };
 
