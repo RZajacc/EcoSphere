@@ -5,12 +5,13 @@ import { signup } from "../../../lib/actions/signup";
 import SubmitButton from "@/_components/ui/forms/SubmitButton";
 import Link from "next/link";
 import FormInput from "@/_components/ui/forms/FormInput";
+import FormErrors from "@/_components/ui/forms/FormErrors";
 
 function Signup() {
   const [state, action] = useFormState(signup, undefined);
   const { pending } = useFormStatus();
   return (
-    <div className="mx-auto mt-12 max-w-md">
+    <div className="mx-auto mt-8 max-w-md">
       <form
         action={action}
         className="grid gap-2 rounded-lg border-2 border-teal-500 p-2 shadow-md shadow-teal-700"
@@ -24,29 +25,39 @@ function Signup() {
         </p>
 
         {/* Form inputs */}
-        <FormInput fieldName="name" placeholder="ie. John" type="text" />
-        {state?.errors?.name && <p>{state.errors.name}</p>}
         <FormInput
-          fieldName="email"
+          label="name"
+          title="Name:"
+          placeholder="ie. John"
+          type="text"
+        />
+        {state?.errors.name && <FormErrors errors={state.errors.name} />}
+        <FormInput
+          label="email"
+          title="Email"
           placeholder="ie. John@mail.com"
           type="email"
         />
-        {state?.errors?.name && <p>{state.errors.email}</p>}
+        {state?.errors.email && <FormErrors errors={state.errors.email} />}
         <FormInput
-          fieldName="password"
+          label="password"
+          title="Password:"
           placeholder="your secret password"
           type="password"
         />
-        {state?.errors?.password && (
-          <div>
-            <p>Password must:</p>
-            <ul>
-              {state.errors.password.map((error) => (
-                <li key={error}>- {error}</li>
-              ))}
-            </ul>
-          </div>
+        {state?.errors.password && (
+          <FormErrors title="Password must:" errors={state.errors.password} />
         )}
+        <FormInput
+          label="confirm"
+          title="Confirm password:"
+          placeholder="your secret password"
+          type="password"
+        />
+        {state?.errors.confirm && (
+          <FormErrors title="Password must:" errors={state.errors.confirm} />
+        )}
+
         <SubmitButton pending={pending} />
       </form>
     </div>

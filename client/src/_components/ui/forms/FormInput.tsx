@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 
 type Props = {
-  fieldName: string;
+  label: string;
+  title: string;
   placeholder: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-function FormInput({ fieldName, placeholder, ...props }: Props) {
+function FormInput({ label, title, placeholder, ...props }: Props) {
   // Check if input is of password type
   const isPassword = props.type === "password";
   // Check what is the provided type
@@ -39,15 +40,15 @@ function FormInput({ fieldName, placeholder, ...props }: Props) {
     <>
       <label
         className="mx-auto w-4/5 font-bold first-letter:capitalize"
-        htmlFor={fieldName}
+        htmlFor={label}
       >
-        {fieldName}:
+        {title}
       </label>
       <input
         {...props}
         type={inputType}
         className="mx-auto w-4/5 rounded-md border p-1 px-2 outline-none hover:border-zinc-500 focus:border-zinc-500"
-        name={fieldName}
+        name={label}
         placeholder={placeholder}
       />
       {/* If password is selected */}
