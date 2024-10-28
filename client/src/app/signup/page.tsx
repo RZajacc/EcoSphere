@@ -32,13 +32,9 @@ function Signup() {
           type="email"
         />
         {state?.errors?.name && <p>{state.errors.email}</p>}
-        <label className="text-center font-semibold" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="mx-auto w-4/5 rounded-md border p-1"
-          id="password"
-          name="password"
+        <FormInput
+          fieldName="password"
+          placeholder="your secret password"
           type="password"
         />
         {state?.errors?.password && (
