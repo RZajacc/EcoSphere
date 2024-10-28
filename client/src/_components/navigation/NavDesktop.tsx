@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SearchBar from "@/_components/ui/SearchBar";
+import SearchBar from "@/_components/ui/navigation/SearchBar";
 
 function NavDesktop() {
   return (

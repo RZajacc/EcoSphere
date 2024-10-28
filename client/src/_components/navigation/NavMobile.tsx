@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import SearchBar from "../ui/SearchBar";
-import HamburgerButton from "../ui/HamburgerButton";
+import SearchBar from "../ui/navigation/SearchBar";
+import HamburgerButton from "../ui/navigation/HamburgerButton";
 import SideBar from "./SideBar";
 import { useState } from "react";
 

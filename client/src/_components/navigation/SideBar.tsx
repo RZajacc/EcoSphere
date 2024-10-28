@@ -1,7 +1,7 @@
 import cancelImage from "@/assets/cancel-svgrepo-com.svg";
 import { SetStateAction } from "react";
 import Image from "next/image";
-import MobileNavLink from "../ui/MobileNavLink";
+import MobileNavLink from "../ui/navigation/MobileNavLink";
 
 type Props = {
   sideBarActive: boolean;
