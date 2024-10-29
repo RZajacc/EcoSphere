@@ -24,6 +24,7 @@ export const SignupFormSchema = z
   });
 
 export type FormState =
+  | { msg: string }
   | {
       errors?: {
         name?: string[];

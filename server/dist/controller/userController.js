@@ -43,7 +43,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         //   Make a db query
         const result = yield db.query("SELECT * FROM users");
         //   Check if query returned data that is not empty array
-        if (result && result.rowCount && result.rowCount > 0) {
+        if (result && result.rowCount != 0) {
             res.status(200).json({
                 msg: "Getting all users",
                 result: result.rows,
@@ -63,43 +63,61 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getAllUsers = getAllUsers;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const inputs = req.body;
-    // Bcrypt config
-    const saltRounds = 10;
-    // Hash password and store new user in database
-    bcrypt_1.default.hash(inputs.password, saltRounds, (err, hash) => __awaiter(void 0, void 0, void 0, function* () {
-        // If hashing fails return an error
-        if (err) {
-            res.status(500).json({
-                msg: "Error while hashing the password",
+    // Check if the user already exists
+    try {
+        const result = yield db.query(`SELECT * FROM users WHERE email='${inputs.email}'`);
+        // If the user exists return an error
+        if (result && result.rowCount !== 0) {
+            res.status(400).json({
+                msg: "User with provided email already exists!",
+                count: result.rowCount,
+                rows: result.rows,
             });
+            // If the user doesnt exist create a new one and hash the password
         }
-        // If theres no error, store new user in the database
-        try {
-            const result = yield db.query(`INSERT INTO users (user_name, email, password) VALUES ('${inputs.userName}', '${inputs.email}', '${hash}')`);
-            // If query was successfull return a message
-            if (result) {
-                res.status(200).json({
-                    msg: "New user added to the database",
-                });
-            }
-            else {
-                res.status(404).json({
-                    msg: "Something went wront while adding a user",
-                });
-            }
+        else {
+            // Bcrypt config
+            const saltRounds = 10;
+            // Hash password and store new user in database
+            bcrypt_1.default.hash(inputs.password, saltRounds, (err, hash) => __awaiter(void 0, void 0, void 0, function* () {
+                // If hashing fails return an error
+                if (err) {
+                    res.status(500).json({
+                        msg: "Error while hashing the password",
+                    });
+                }
+                // If theres no error, store new user in the database
+                try {
+                    const result = yield db.query(`INSERT INTO users (user_name, email, password) VALUES ('${inputs.userName}', '${inputs.email}', '${hash}')`);
+                    // If query was successfull return a message
+                    if (result && result.rowCount != 0) {
+                        res.status(200).json({
+                            msg: "New user added to the database",
+                        });
+                    }
+                    else {
+                        res.status(404).json({
+                            msg: "Something went wront while adding a user",
+                        });
+                    }
+                }
+                catch (error) {
+                    res.status(500).json({
+                        msg: "Something went wrong while saving a user in the database",
+                    });
+                }
+            }));
         }
-        catch (error) {
-            res.status(500).json({
-                msg: "Something went wrong while saving a user in the database",
-            });
-        }
-    }));
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
 });
 exports.signup = signup;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const inputs = req.body;
     const result = yield db.query(`SELECT * FROM users WHERE email = '${inputs.email}'`);
-    if (result) {
+    if (result && result.rowCount != 0) {
         bcrypt_1.default.compare(inputs.password, result.rows[0].password, (err, result) => {
             console.log("PASSWORD COMPARE", result);
         });

@@ -14,6 +14,10 @@ function SignupForm({ children }: Props) {
   const [state, action] = useFormState(signup, undefined);
   const { pending } = useFormStatus();
 
+  // Computed values
+  const validationErrors = state && "errors" in state && state.errors;
+  const apiError = state && "msg" in state && state.msg;
+
   return (
     <form
       action={action}
@@ -21,40 +25,47 @@ function SignupForm({ children }: Props) {
     >
       {children}
 
-      {/* Form inputs */}
+      {/* Form inputs and field validation*/}
       <FormInput
         name="name"
         placeholder="ie. John"
         type="text"
-        errors={state?.errors.name}
+        errors={validationErrors ? validationErrors.name : undefined}
       />
-      {state?.errors.name && <FormErrors errors={state.errors.name} />}
+      {validationErrors && validationErrors.name && (
+        <FormErrors errors={validationErrors.name} />
+      )}
       <FormInput
         name="email"
         placeholder="ie. John@mail.com"
         type="email"
-        errors={state?.errors.email}
+        errors={validationErrors ? validationErrors.email : undefined}
       />
-      {state?.errors.email && <FormErrors errors={state.errors.email} />}
+      {validationErrors && validationErrors.email && (
+        <FormErrors errors={validationErrors.email} />
+      )}
       <FormInput
         name="password"
         placeholder="your secret password"
         type="password"
-        errors={state?.errors.password}
+        errors={validationErrors ? validationErrors.password : undefined}
       />
-      {state?.errors.password && (
-        <FormErrors title="Password must:" errors={state.errors.password} />
+      {validationErrors && validationErrors.password && (
+        <FormErrors title="Password must:" errors={validationErrors.password} />
       )}
       <FormInput
         name="confirm"
         text="Confirm password"
         placeholder="your secret password"
         type="password"
-        errors={state?.errors.confirm}
+        errors={validationErrors ? validationErrors.confirm : undefined}
       />
-      {state?.errors.confirm && (
-        <FormErrors title="Password must:" errors={state.errors.confirm} />
+      {validationErrors && validationErrors.confirm && (
+        <FormErrors title="Password must:" errors={validationErrors.confirm} />
       )}
+
+      {/* Error coming from the api after validation is complete */}
+      {apiError && <FormErrors errors={[apiError]} />}
 
       <SubmitButton pending={pending} />
     </form>

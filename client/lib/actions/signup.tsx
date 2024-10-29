@@ -1,4 +1,3 @@
-import { error } from "console";
 import { SignupFormSchema, FormState } from "../definitions/SignupFormSchema";
 import { redirect } from "next/navigation";
 
@@ -38,7 +37,8 @@ export async function signup(state: FormState, formData: FormData) {
 
   if (!response.ok) {
     const responsData: { msg: string } = await response.json();
-    throw new Error(responsData.msg);
+    return responsData;
+    // throw new Error(responsData.msg);
   } else {
     redirect("/login");
   }
