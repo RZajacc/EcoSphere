@@ -11,7 +11,6 @@ function Signup() {
   const [state, action] = useFormState(signup, undefined);
   const { pending } = useFormStatus();
 
-  console.log(state?.errors.email);
   return (
     <div className="mx-auto mt-8 max-w-md">
       <form
@@ -28,24 +27,21 @@ function Signup() {
 
         {/* Form inputs */}
         <FormInput
-          label="name"
-          title="Name:"
+          name="name"
           placeholder="ie. John"
           type="text"
           errors={state?.errors.name}
         />
         {state?.errors.name && <FormErrors errors={state.errors.name} />}
         <FormInput
-          label="email"
-          title="Email"
+          name="email"
           placeholder="ie. John@mail.com"
           type="email"
           errors={state?.errors.email}
         />
         {state?.errors.email && <FormErrors errors={state.errors.email} />}
         <FormInput
-          label="password"
-          title="Password:"
+          name="password"
           placeholder="your secret password"
           type="password"
           errors={state?.errors.password}
@@ -54,8 +50,8 @@ function Signup() {
           <FormErrors title="Password must:" errors={state.errors.password} />
         )}
         <FormInput
-          label="confirm"
-          title="Confirm password:"
+          name="confirm"
+          text="Confirm password"
           placeholder="your secret password"
           type="password"
           errors={state?.errors.confirm}
