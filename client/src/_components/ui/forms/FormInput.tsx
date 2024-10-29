@@ -1,13 +1,15 @@
 "use client";
+import { error } from "console";
 import React, { useEffect, useState } from "react";
 
 type Props = {
   label: string;
   title: string;
   placeholder: string;
+  errors: string[] | undefined;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-function FormInput({ label, title, placeholder, ...props }: Props) {
+function FormInput({ label, title, placeholder, errors, ...props }: Props) {
   // Check if input is of password type
   const isPassword = props.type === "password";
   // Check what is the provided type
@@ -47,7 +49,7 @@ function FormInput({ label, title, placeholder, ...props }: Props) {
       <input
         {...props}
         type={inputType}
-        className="mx-auto w-4/5 rounded-md border p-1 px-2 outline-none hover:border-zinc-500 focus:border-zinc-500"
+        className={`mx-auto w-4/5 rounded-md border ${errors ? "border-rose-400 text-rose-400 hover:border-rose-400 focus:border-rose-400" : "border-zinc-300 hover:border-zinc-500 focus:border-zinc-500"} p-1 px-2 outline-none`}
         name={label}
         placeholder={placeholder}
       />

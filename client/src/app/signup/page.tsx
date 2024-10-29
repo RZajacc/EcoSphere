@@ -10,6 +10,8 @@ import FormErrors from "@/_components/ui/forms/FormErrors";
 function Signup() {
   const [state, action] = useFormState(signup, undefined);
   const { pending } = useFormStatus();
+
+  console.log(state?.errors.email);
   return (
     <div className="mx-auto mt-8 max-w-md">
       <form
@@ -30,6 +32,7 @@ function Signup() {
           title="Name:"
           placeholder="ie. John"
           type="text"
+          errors={state?.errors.name}
         />
         {state?.errors.name && <FormErrors errors={state.errors.name} />}
         <FormInput
@@ -37,6 +40,7 @@ function Signup() {
           title="Email"
           placeholder="ie. John@mail.com"
           type="email"
+          errors={state?.errors.email}
         />
         {state?.errors.email && <FormErrors errors={state.errors.email} />}
         <FormInput
@@ -44,6 +48,7 @@ function Signup() {
           title="Password:"
           placeholder="your secret password"
           type="password"
+          errors={state?.errors.password}
         />
         {state?.errors.password && (
           <FormErrors title="Password must:" errors={state.errors.password} />
@@ -53,6 +58,7 @@ function Signup() {
           title="Confirm password:"
           placeholder="your secret password"
           type="password"
+          errors={state?.errors.confirm}
         />
         {state?.errors.confirm && (
           <FormErrors title="Password must:" errors={state.errors.confirm} />
