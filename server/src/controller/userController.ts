@@ -97,6 +97,8 @@ export const login: RequestHandler = async (req, res) => {
     }
 
     if (queryResult && queryResult.rowCount !== 0) {
+      // Secret key to encrypt jwt token
+      const secretKey = process.env.MYSECRETKEY as string;
       // If user exists check if provided password is valid
       bcrypt.compare(
         inputs.password,
@@ -107,14 +109,14 @@ export const login: RequestHandler = async (req, res) => {
             res.status(400).json(err);
           }
 
-          // Else sign a jwt token and return it
+          // If passwords match sign the token, otherwise send a message to the user
           if (result) {
             let token = jwt.sign(
               {
                 sub: queryResult.rows[0].user_id,
                 email: queryResult.rows[0].email,
               },
-              "temporary secret key",
+              secretKey,
               {
                 expiresIn: "1d",
               }

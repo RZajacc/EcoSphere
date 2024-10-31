@@ -126,18 +126,20 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         if (queryResult && queryResult.rowCount !== 0) {
+            // Secret key to encrypt jwt token
+            const secretKey = process.env.MYSECRETKEY;
             // If user exists check if provided password is valid
             bcrypt_1.default.compare(inputs.password, queryResult.rows[0].password, (err, result) => {
                 // If theres an error while comparing passwords return it
                 if (err) {
                     res.status(400).json(err);
                 }
-                // Else sign a jwt token and return it
+                // If passwords match sign the token, otherwise send a message to the user
                 if (result) {
                     let token = jsonwebtoken_1.default.sign({
                         sub: queryResult.rows[0].user_id,
                         email: queryResult.rows[0].email,
-                    }, "temporary secret key", {
+                    }, secretKey, {
                         expiresIn: "1d",
                     });
                     res.status(200).json({ token });
