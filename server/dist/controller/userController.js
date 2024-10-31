@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.signup = exports.getAllUsers = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = __importStar(require("../db/index"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //   Make a db query
@@ -116,11 +117,39 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.signup = signup;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const inputs = req.body;
-    const result = yield db.query(`SELECT * FROM users WHERE email = '${inputs.email}'`);
-    if (result && result.rowCount != 0) {
-        bcrypt_1.default.compare(inputs.password, result.rows[0].password, (err, result) => {
-            console.log("PASSWORD COMPARE", result);
-        });
+    // Check if the user exists in the database
+    try {
+        const queryResult = yield db.query(`SELECT * FROM users WHERE email = '${inputs.email}'`);
+        if (queryResult && queryResult.rowCount === 0) {
+            res.status(404).json({
+                msg: "User was not found in the database",
+            });
+        }
+        if (queryResult && queryResult.rowCount !== 0) {
+            // If user exists check if provided password is valid
+            bcrypt_1.default.compare(inputs.password, queryResult.rows[0].password, (err, result) => {
+                // If theres an error while comparing passwords return it
+                if (err) {
+                    res.status(400).json(err);
+                }
+                // Else sign a jwt token and return it
+                if (result) {
+                    let token = jsonwebtoken_1.default.sign({
+                        sub: queryResult.rows[0].user_id,
+                        email: queryResult.rows[0].email,
+                    }, "temporary secret key", {
+                        expiresIn: "1d",
+                    });
+                    res.status(200).json({ token });
+                }
+                else {
+                    res.status(401).json({ msg: "Password is incorrect!" });
+                }
+            });
+        }
+    }
+    catch (error) {
+        res.status(500).json(error);
     }
 });
 exports.login = login;

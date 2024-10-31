@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import * as db from "../db/index";
 import { QueryResult } from "pg";
+import jwt from "jsonwebtoken";
 
 export const getAllUsers: RequestHandler = async (req, res) => {
   try {
@@ -83,14 +84,50 @@ export const signup: RequestHandler = async (req, res) => {
 export const login: RequestHandler = async (req, res) => {
   const inputs: { email: string; password: string } = req.body;
 
-  const result = await db.query(
-    `SELECT * FROM users WHERE email = '${inputs.email}'`
-  );
+  // Check if the user exists in the database
+  try {
+    const queryResult = await db.query(
+      `SELECT * FROM users WHERE email = '${inputs.email}'`
+    );
 
-  if (result && result.rowCount != 0) {
-    bcrypt.compare(inputs.password, result.rows[0].password, (err, result) => {
-      console.log("PASSWORD COMPARE", result);
-    });
+    if (queryResult && queryResult.rowCount === 0) {
+      res.status(404).json({
+        msg: "User was not found in the database",
+      });
+    }
+
+    if (queryResult && queryResult.rowCount !== 0) {
+      // If user exists check if provided password is valid
+      bcrypt.compare(
+        inputs.password,
+        queryResult.rows[0].password,
+        (err, result) => {
+          // If theres an error while comparing passwords return it
+          if (err) {
+            res.status(400).json(err);
+          }
+
+          // Else sign a jwt token and return it
+          if (result) {
+            let token = jwt.sign(
+              {
+                sub: queryResult.rows[0].user_id,
+                email: queryResult.rows[0].email,
+              },
+              "temporary secret key",
+              {
+                expiresIn: "1d",
+              }
+            );
+            res.status(200).json({ token });
+          } else {
+            res.status(401).json({ msg: "Password is incorrect!" });
+          }
+        }
+      );
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
