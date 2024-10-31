@@ -133,4 +133,10 @@ export const login: RequestHandler = async (req, res) => {
   }
 };
 
-export default { getAllUsers, signup, login };
+export const getUser: RequestHandler = (req, res) => {
+  res.status(200).json({
+    msg: "Hey",
+  });
+};
+
+export default { getAllUsers, signup, login, getUser };

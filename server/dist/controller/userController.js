@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.signup = exports.getAllUsers = void 0;
+exports.getUser = exports.login = exports.signup = exports.getAllUsers = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = __importStar(require("../db/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -155,4 +155,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
-exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup, login: exports.login };
+const getUser = (req, res) => {
+    res.status(200).json({
+        msg: "Hey",
+    });
+};
+exports.getUser = getUser;
+exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup, login: exports.login, getUser: exports.getUser };
