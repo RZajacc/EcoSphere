@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes";
 import eventRoutes from "./routes/eventRoutes";
+import passport from "./config/passport";
 
 // Create an app
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(passport.initialize());
 
 // Add routes
 app.use("/users", userRoutes);

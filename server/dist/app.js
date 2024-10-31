@@ -7,12 +7,14 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
+const passport_1 = __importDefault(require("./config/passport"));
 // Create an app
 const app = (0, express_1.default)();
 // Add middlewares
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
+app.use(passport_1.default.initialize());
 // Add routes
 app.use("/users", userRoutes_1.default);
 app.use("/events", eventRoutes_1.default);
