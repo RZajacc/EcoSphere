@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import * as db from "../db/index";
 import { QueryResult } from "pg";
 import jwt from "jsonwebtoken";
+import { User } from "../types/UserTypes";
 
 export const signup: RequestHandler = async (req, res) => {
   const inputs: { userName: string; email: string; password: string } =
@@ -64,7 +65,7 @@ export const login: RequestHandler = async (req, res) => {
 
   // Check if the user exists in the database
   try {
-    const queryResult = await db.query(
+    const queryResult: void | QueryResult<User> = await db.query(
       `SELECT * FROM users WHERE email = '${inputs.email}'`
     );
 
