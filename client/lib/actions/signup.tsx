@@ -38,7 +38,6 @@ export async function signup(state: FormState, formData: FormData) {
   if (!response.ok) {
     const responsData: { msg: string } = await response.json();
     return responsData;
-    // throw new Error(responsData.msg);
   } else {
     redirect("/login");
   }
