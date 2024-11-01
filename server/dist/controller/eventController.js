@@ -40,14 +40,14 @@ const getAllEventsByDate = (req, res) => __awaiter(void 0, void 0, void 0, funct
     try {
         // DB Query
         const result = yield db.query(`SELECT * FROM events WHERE date >='${inputs.date}' ORDER BY date`);
-        if (result && result.rowCount && result.rowCount > 0) {
+        if (result && result.rowCount !== 0) {
             res.status(200).json({
                 result: result.rows,
             });
         }
         else {
             res.status(404).json({
-                msg: "No entries foun",
+                msg: "No entries found",
             });
         }
     }
@@ -70,7 +70,7 @@ const getEventByTitle = (req, res) => __awaiter(void 0, void 0, void 0, function
       FROM events e
       JOIN users u ON u.user_id = e.user_id 
       WHERE title = '${inputs.title}'`);
-        if (result && result.rowCount && result.rowCount > 0) {
+        if (result && result.rowCount !== 0) {
             res.status(200).json(result.rows[0]);
         }
         else {
