@@ -100,7 +100,12 @@ export const login: RequestHandler = async (req, res) => {
                 expiresIn: "1d",
               }
             );
-            res.status(200).json({ token });
+            // res.status(200).json({ token });
+            res.status(201).cookie("auth-token", token, {
+              httpOnly: true,
+              sameSite: "strict",
+              // secure:true
+            });
           } else {
             res.status(401).json({ msg: "Password is incorrect!" });
           }
@@ -110,6 +115,10 @@ export const login: RequestHandler = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+export const logout: RequestHandler = (req, res) => {
+  res.clearCookie("auth-token");
 };
 
 export const getUser: RequestHandler = (req, res) => {
