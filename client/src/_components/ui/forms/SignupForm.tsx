@@ -67,7 +67,7 @@ function SignupForm({ children }: Props) {
       {/* Error coming from the api after validation is complete */}
       {apiError && <FormErrors errors={[apiError]} />}
 
-      <SubmitButton pending={pending} />
+      <SubmitButton title="Sign up" pending={pending} />
     </form>
   );
 }

@@ -6,7 +6,7 @@ type Props = {
   name: string;
   text?: string;
   placeholder: string;
-  errors: string[] | undefined;
+  errors?: string[] | undefined;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 function FormInput({ name, text, placeholder, errors, ...props }: Props) {
