@@ -4,27 +4,6 @@ import * as db from "../db/index";
 import { QueryResult } from "pg";
 import jwt from "jsonwebtoken";
 
-export const getAllUsers: RequestHandler = async (req, res) => {
-  try {
-    //   Make a db query
-    const result: QueryResult | void = await db.query("SELECT * FROM users");
-    //   Check if query returned data that is not empty array
-    if (result && result.rowCount != 0) {
-      res.status(200).json({
-        msg: "Getting all users",
-        result: result.rows,
-      });
-      // If not return simple error message
-    } else {
-      res.status(404).json({
-        msg: "No users found in the database",
-      });
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
 export const signup: RequestHandler = async (req, res) => {
   const inputs: { userName: string; email: string; password: string } =
     req.body;
@@ -147,4 +126,4 @@ export const getUser: RequestHandler = (req, res) => {
   }
 };
 
-export default { getAllUsers, signup, login, getUser };
+export default { signup, login, getUser };

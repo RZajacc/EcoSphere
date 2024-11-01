@@ -35,33 +35,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.login = exports.signup = exports.getAllUsers = void 0;
+exports.getUser = exports.login = exports.signup = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = __importStar(require("../db/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //   Make a db query
-        const result = yield db.query("SELECT * FROM users");
-        //   Check if query returned data that is not empty array
-        if (result && result.rowCount != 0) {
-            res.status(200).json({
-                msg: "Getting all users",
-                result: result.rows,
-            });
-            // If not return simple error message
-        }
-        else {
-            res.status(404).json({
-                msg: "No users found in the database",
-            });
-        }
-    }
-    catch (error) {
-        res.status(500).json(error);
-    }
-});
-exports.getAllUsers = getAllUsers;
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const inputs = req.body;
     // Check if the user already exists
@@ -169,4 +146,4 @@ const getUser = (req, res) => {
     }
 };
 exports.getUser = getUser;
-exports.default = { getAllUsers: exports.getAllUsers, signup: exports.signup, login: exports.login, getUser: exports.getUser };
+exports.default = { signup: exports.signup, login: exports.login, getUser: exports.getUser };
