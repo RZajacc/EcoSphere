@@ -134,8 +134,10 @@ export const login: RequestHandler = async (req, res) => {
 };
 
 export const getUser: RequestHandler = (req, res) => {
+  const user = req.user;
   res.status(200).json({
     msg: "Hey",
+    user: user,
   });
 };
 
