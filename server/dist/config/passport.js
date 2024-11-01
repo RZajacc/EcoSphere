@@ -45,7 +45,7 @@ let opts = {
 passport_1.default.use(new passport_jwt_1.Strategy(opts, (jwt_payload, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Try to find a user in the database
-        const queryResult = yield db.query(`SELECT * FROM users WHERE user_id='${jwt_payload.sub}'`);
+        const queryResult = yield db.query(`SELECT user_id, user_name, email FROM users WHERE user_id='${jwt_payload.sub}'`);
         // If user is there return it
         if (queryResult && queryResult.rowCount !== 0) {
             const user = queryResult.rows[0];
@@ -56,19 +56,7 @@ passport_1.default.use(new passport_jwt_1.Strategy(opts, (jwt_payload, done) => 
         }
     }
     catch (error) {
-        console.log("Something went wront with validation");
         return done(error, false);
     }
-    // User.findOne({ id: jwt_payload.sub }, function (err, user) {
-    //   if (err) {
-    //     return done(err, false);
-    //   }
-    //   if (user) {
-    //     return done(null, user);
-    //   } else {
-    //     return done(null, false);
-    //     // or you could create a new account
-    //   }
-    // });
 })));
 exports.default = passport_1.default;

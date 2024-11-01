@@ -1,6 +1,8 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import passport from "passport";
 import * as db from "../db/index";
+import { JwtPayload } from "jsonwebtoken";
+import { QueryResult } from "pg";
 
 let opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -8,11 +10,15 @@ let opts = {
 };
 
 passport.use(
-  new JwtStrategy(opts, async (jwt_payload, done) => {
+  new JwtStrategy(opts, async (jwt_payload: JwtPayload, done) => {
     try {
       // Try to find a user in the database
-      const queryResult = await db.query(
-        `SELECT * FROM users WHERE user_id='${jwt_payload.sub}'`
+      const queryResult: void | QueryResult<{
+        user_id: string;
+        user_name: string;
+        email: string;
+      }> = await db.query(
+        `SELECT user_id, user_name, email FROM users WHERE user_id='${jwt_payload.sub}'`
       );
       // If user is there return it
       if (queryResult && queryResult.rowCount !== 0) {
@@ -22,20 +28,8 @@ passport.use(
         return done(null, false);
       }
     } catch (error) {
-      console.log("Something went wront with validation");
       return done(error, false);
     }
-    // User.findOne({ id: jwt_payload.sub }, function (err, user) {
-    //   if (err) {
-    //     return done(err, false);
-    //   }
-    //   if (user) {
-    //     return done(null, user);
-    //   } else {
-    //     return done(null, false);
-    //     // or you could create a new account
-    //   }
-    // });
   })
 );
 

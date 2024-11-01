@@ -134,11 +134,17 @@ export const login: RequestHandler = async (req, res) => {
 };
 
 export const getUser: RequestHandler = (req, res) => {
+  // Get user from the request
   const user = req.user;
-  res.status(200).json({
-    msg: "Hey",
-    user: user,
-  });
+
+  // If it exists return it, otherwise send a message
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(401).json({
+      msg: "You need to authorize first!",
+    });
+  }
 };
 
 export default { getAllUsers, signup, login, getUser };
