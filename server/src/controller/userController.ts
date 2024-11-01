@@ -10,15 +10,14 @@ export const signup: RequestHandler = async (req, res) => {
 
   // Check if the user already exists
   try {
-    const result: QueryResult | void = await db.query(
-      `SELECT * FROM users WHERE email='${inputs.email}'`
+    const result: void | QueryResult<{ email: string }> = await db.query(
+      `SELECT email FROM users WHERE email='${inputs.email}'`
     );
     // If the user exists return an error
     if (result && result.rowCount !== 0) {
       res.status(400).json({
         msg: "User with provided email already exists!",
-        count: result.rowCount,
-        rows: result.rows,
+        emailProvided: result.rows[0].email,
       });
       // If the user doesnt exist create a new one and hash the password
     } else {
@@ -39,7 +38,7 @@ export const signup: RequestHandler = async (req, res) => {
             `INSERT INTO users (user_name, email, password) VALUES ('${inputs.userName}', '${inputs.email}', '${hash}')`
           );
           // If query was successfull return a message
-          if (result && result.rowCount != 0) {
+          if (result && result.rowCount !== 0) {
             res.status(200).json({
               msg: "New user added to the database",
             });
