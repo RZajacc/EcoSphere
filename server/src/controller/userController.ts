@@ -87,7 +87,7 @@ export const login: RequestHandler = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           }
-
+          console.log("PASSWORD MATCH", result);
           // If passwords match sign the token, otherwise send a message to the user
           if (result) {
             let token = jwt.sign(
@@ -101,10 +101,14 @@ export const login: RequestHandler = async (req, res) => {
               }
             );
             // res.status(200).json({ token });
-            res.status(201).cookie("auth-token", token, {
+            res.cookie("auth-token", token, {
               httpOnly: true,
               sameSite: "strict",
+              path: "/",
               // secure:true
+            });
+            res.status(201).json({
+              msg: "Login successfull",
             });
           } else {
             res.status(401).json({ msg: "Password is incorrect!" });

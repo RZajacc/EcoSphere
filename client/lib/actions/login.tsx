@@ -20,6 +20,7 @@ export const login = async (state: FormState, formData: FormData) => {
     headers: myHeaders,
     body: urlencoded,
     redirect: "follow",
+    credentials: "include",
   });
 
   if (!response.ok) {
