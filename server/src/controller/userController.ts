@@ -123,6 +123,9 @@ export const login: RequestHandler = async (req, res) => {
 
 export const logout: RequestHandler = (req, res) => {
   res.clearCookie("auth-token");
+  res.status(200).json({
+    msg: "Cookies cleared successfully",
+  });
 };
 
 export const getUser: RequestHandler = (req, res) => {

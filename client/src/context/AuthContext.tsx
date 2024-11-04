@@ -1,6 +1,7 @@
 "use client";
 import { createContext, SetStateAction, useEffect, useState } from "react";
 import { User } from "../../types/UserTypes";
+import { cookies } from "next/headers";
 
 // Context type
 type AuthContextType = {
@@ -27,7 +28,7 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | undefined>(undefined);
   // Method checking if cookie is attached to the request
   const checkAuth = async () => {
-    const response = await fetch("/api", {
+    const response = await fetch("/api/getToken", {
       method: "GET",
       credentials: "include",
     });
@@ -48,11 +49,29 @@ export const AuthContextProvider = ({
       if (response.ok) {
         const userData: User = await response.json();
         setUser(userData);
+      } else {
+        setUser(undefined);
       }
     }
   };
 
-  const logout = async () => {};
+  const logout = async () => {
+    const response = await fetch("/api/clearToken", {
+      method: "GET",
+      credentials: "include",
+    });
+    checkAuth();
+    // const response = await fetch("http://localhost:5000/users/logout", {
+    //   method: "GET",
+    //   redirect: "follow",
+    // });
+    // if (response.ok) {
+    //   checkAuth();
+    // }
+    // const cookieStore = cookies();
+    // cookieStore.delete("auth-token");
+    // checkAuth();
+  };
 
   useEffect(() => {
     checkAuth();

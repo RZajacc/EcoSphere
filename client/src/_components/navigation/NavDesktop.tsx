@@ -10,7 +10,7 @@ import Image from "next/image";
 import NavigationLink from "./NavigationLink";
 
 function NavDesktop() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {
@@ -50,6 +50,7 @@ function NavDesktop() {
             className={`${!showDropdown ? "hidden" : ""} absolute right-7 top-12 w-40 rounded-md border border-zinc-300 p-2`}
           >
             <NavigationLink path="/" title="Home" callback={toggleDropdown} />
+            <NavigationLink path="/" title="Logout" callback={logout} />
           </ul>
         </section>
       ) : (
