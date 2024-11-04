@@ -1,13 +1,26 @@
 "use client";
-import { createContext, useEffect } from "react";
+import { createContext, SetStateAction, useEffect, useState } from "react";
+import { User } from "../../types/UserTypes";
 
-export const AuthContext = createContext(1);
+// Context type
+type AuthContextType = {
+  user: User | undefined;
+  setUser: React.Dispatch<SetStateAction<User | undefined>>;
+};
+// Init value for the context
+const AuthContextInit: AuthContextType = {
+  user: undefined,
+  setUser: async () => undefined,
+};
+
+export const AuthContext = createContext<AuthContextType>(AuthContextInit);
 
 export const AuthContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const [user, setUser] = useState<User | undefined>(undefined);
   // Method checking if cookie is attached to the request
   const checkAuth = async () => {
     const response = await fetch("/api", {
@@ -17,6 +30,7 @@ export const AuthContextProvider = ({
     // Get the value of the token if it exists
     const token: string | undefined = await response.json();
 
+    //   Get user data
     console.log("TOKEN", token);
   };
 
@@ -24,8 +38,9 @@ export const AuthContextProvider = ({
     checkAuth();
   }, []);
 
-  //   const response = await fetch("/api", { method: " GET" });
-  //   console.log(response);
-
-  return <AuthContext.Provider value={3}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
