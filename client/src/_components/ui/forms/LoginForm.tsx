@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";
 import { useFormState, useFormStatus } from "react-dom";
 import { login } from "../../../../lib/actions/login";
 import FormErrors from "./FormErrors";
+import { AuthContext } from "@/context/AuthContext";
 
 type Props = {
   children: React.ReactNode;
