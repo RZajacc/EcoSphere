@@ -7,10 +7,15 @@ import noUserImg from "../../assets/noUser.png";
 import pointerUp from "../../assets/pointerup.svg";
 import pointerDown from "../../assets/pointerdown.svg";
 import Image from "next/image";
+import NavigationLink from "./NavigationLink";
 
 function NavDesktop() {
   const { user } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown((prevVal) => !prevVal);
+  };
   return (
     <div className="hidden items-center justify-between py-4 sm:flex">
       <section>
@@ -25,13 +30,8 @@ function NavDesktop() {
         <SearchBar />
       </section>
       {user ? (
-        <section>
-          <button
-            className="mr-7 flex items-center"
-            onClick={() => {
-              setShowDropdown((prevVal) => !prevVal);
-            }}
-          >
+        <section className="relative">
+          <button className="mr-7 flex items-center" onClick={toggleDropdown}>
             <Image
               src={noUserImg}
               alt="No user image"
@@ -39,11 +39,16 @@ function NavDesktop() {
               className="rounded-full"
             />
             <Image
-              src={showDropdown ? pointerDown : pointerUp}
+              src={showDropdown ? pointerUp : pointerDown}
               alt="Pointer down"
               width={25}
             />
           </button>
+          <ul
+            className={`${!showDropdown ? "hidden" : ""} absolute right-7 top-12 w-40 rounded-md border border-zinc-300 p-2`}
+          >
+            <NavigationLink path="/" title="Home" callback={toggleDropdown} />
+          </ul>
         </section>
       ) : (
         <section className="mr-7 space-x-4">
