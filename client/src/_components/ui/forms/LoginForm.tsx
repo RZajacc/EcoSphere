@@ -14,7 +14,9 @@ type Props = {
 function LoginForm({ children }: Props) {
   const [state, action] = useFormState(login, undefined);
   const { pending } = useFormStatus();
+  const { user } = useContext(AuthContext);
 
+  console.log("USER", user);
   return (
     <form
       className="grid gap-2 rounded-lg border-2 border-teal-500 p-2 shadow-md shadow-teal-700"

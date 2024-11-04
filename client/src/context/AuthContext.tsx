@@ -6,11 +6,13 @@ import { User } from "../../types/UserTypes";
 type AuthContextType = {
   user: User | undefined;
   setUser: React.Dispatch<SetStateAction<User | undefined>>;
+  checkAuth: () => Promise<void>;
 };
 // Init value for the context
 const AuthContextInit: AuthContextType = {
   user: undefined,
   setUser: async () => undefined,
+  checkAuth: async () => undefined,
 };
 
 export const AuthContext = createContext<AuthContextType>(AuthContextInit);
@@ -31,7 +33,21 @@ export const AuthContextProvider = ({
     const token: string | undefined = await response.json();
 
     //   Get user data
-    console.log("TOKEN", token);
+    if (token) {
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+
+      const response = await fetch("http://localhost:5000/users/getUser", {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      });
+
+      if (response.ok) {
+        const userData: User = await response.json();
+        setUser(userData);
+      }
+    }
   };
 
   useEffect(() => {
@@ -39,7 +55,7 @@ export const AuthContextProvider = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );
