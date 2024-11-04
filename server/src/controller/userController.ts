@@ -139,4 +139,4 @@ export const getUser: RequestHandler = (req, res) => {
   }
 };
 
-export default { signup, login, getUser };
+export default { signup, login, getUser, logout };

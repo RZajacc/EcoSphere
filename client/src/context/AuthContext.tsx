@@ -7,12 +7,14 @@ type AuthContextType = {
   user: User | undefined;
   setUser: React.Dispatch<SetStateAction<User | undefined>>;
   checkAuth: () => Promise<void>;
+  logout: () => void;
 };
 // Init value for the context
 const AuthContextInit: AuthContextType = {
   user: undefined,
   setUser: async () => undefined,
   checkAuth: async () => undefined,
+  logout: async () => undefined,
 };
 
 export const AuthContext = createContext<AuthContextType>(AuthContextInit);
@@ -50,12 +52,14 @@ export const AuthContextProvider = ({
     }
   };
 
+  const logout = async () => {};
+
   useEffect(() => {
     checkAuth();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, checkAuth }}>
+    <AuthContext.Provider value={{ user, setUser, checkAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

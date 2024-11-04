@@ -29,6 +29,8 @@ function NavDesktop() {
       <section>
         <SearchBar />
       </section>
+
+      {/* If user is logged in */}
       {user ? (
         <section className="relative">
           <button className="mr-7 flex items-center" onClick={toggleDropdown}>
@@ -51,6 +53,7 @@ function NavDesktop() {
           </ul>
         </section>
       ) : (
+        // If user is not logged in
         <section className="mr-7 space-x-4">
           <Link href={"/login"} className="font-semibold hover:text-teal-600">
             Login
