@@ -121,13 +121,6 @@ export const login: RequestHandler = async (req, res) => {
   }
 };
 
-export const logout: RequestHandler = (req, res) => {
-  res.clearCookie("auth-token");
-  res.status(200).json({
-    msg: "Cookies cleared successfully",
-  });
-};
-
 export const getUser: RequestHandler = (req, res) => {
   // Get user from the request
   const user = req.user;
@@ -142,4 +135,4 @@ export const getUser: RequestHandler = (req, res) => {
   }
 };
 
-export default { signup, login, getUser, logout };
+export default { signup, login, getUser };
