@@ -10,10 +10,8 @@ import Image from "next/image";
 import NavigationLink from "./NavigationLink";
 
 function NavDesktop() {
-  const { user, logout, checkAuth } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
-
-  console.log("USER IN NAV", user);
 
   const toggleDropdown = () => {
     setShowDropdown((prevVal) => !prevVal);

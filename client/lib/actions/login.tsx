@@ -1,8 +1,4 @@
-import { AuthContext } from "@/context/AuthContext";
-import { redirect } from "next/navigation";
-import { useContext } from "react";
-
-type FormState = { msg: string } | undefined;
+type FormState = { success: boolean; msg: string } | undefined;
 
 export const login = async (state: FormState, formData: FormData) => {
   //   User credentials
@@ -27,8 +23,9 @@ export const login = async (state: FormState, formData: FormData) => {
 
   if (!response.ok) {
     const responseData: { msg: string } = await response.json();
-    return responseData;
+    return { success: false, msg: responseData.msg };
   } else {
-    redirect("/");
+    const responseData: { msg: string } = await response.json();
+    return { success: true, msg: responseData.msg };
   }
 };

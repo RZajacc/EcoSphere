@@ -7,14 +7,14 @@ import { cookies } from "next/headers";
 type AuthContextType = {
   user: User | undefined;
   setUser: React.Dispatch<SetStateAction<User | undefined>>;
-  checkAuth: () => Promise<void>;
+  revalidateUser: () => Promise<void>;
   logout: () => Promise<void>;
 };
 // Init value for the context
 const AuthContextInit: AuthContextType = {
   user: undefined,
   setUser: async () => undefined,
-  checkAuth: async () => undefined,
+  revalidateUser: async () => undefined,
   logout: async () => undefined,
 };
 
@@ -25,9 +25,10 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // State variables
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  // Method checking if cookie is attached to the request
+  //? ------------CHECK IF USER IS AUTHENTICATED---------------
   const checkAuth = async () => {
     const response = await fetch("/api/token", {
       method: "GET",
@@ -36,7 +37,6 @@ export const AuthContextProvider = ({
     // Get the value of the token if it exists
     const token: { authorized: boolean; token: string | undefined } =
       await response.json();
-    console.log("TOKEN", token);
 
     //   Get user data
     if (token.authorized) {
@@ -60,13 +60,19 @@ export const AuthContextProvider = ({
     }
   };
 
+  //? ------------REVALIDATE USER METHOD---------------
+  const revalidateUser = async () => {
+    await checkAuth();
+  };
+
+  //? -----------LOGOUT METHOD---------------
   const logout = async () => {
     const response = await fetch("/api/token", {
       method: "POST",
       credentials: "include",
     });
 
-    await checkAuth();
+    revalidateUser();
   };
 
   useEffect(() => {
@@ -74,7 +80,7 @@ export const AuthContextProvider = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, checkAuth, logout }}>
+    <AuthContext.Provider value={{ user, setUser, revalidateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
