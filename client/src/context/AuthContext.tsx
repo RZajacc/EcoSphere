@@ -8,7 +8,7 @@ type AuthContextType = {
   user: User | undefined;
   setUser: React.Dispatch<SetStateAction<User | undefined>>;
   checkAuth: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 // Init value for the context
 const AuthContextInit: AuthContextType = {
@@ -26,6 +26,7 @@ export const AuthContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
+
   // Method checking if cookie is attached to the request
   const checkAuth = async () => {
     const response = await fetch("/api/token", {
@@ -35,6 +36,7 @@ export const AuthContextProvider = ({
     // Get the value of the token if it exists
     const token: { authorized: boolean; token: string | undefined } =
       await response.json();
+    console.log("TOKEN", token);
 
     //   Get user data
     if (token.authorized) {
@@ -53,6 +55,8 @@ export const AuthContextProvider = ({
       } else {
         setUser(undefined);
       }
+    } else {
+      setUser(undefined);
     }
   };
 
@@ -61,17 +65,8 @@ export const AuthContextProvider = ({
       method: "POST",
       credentials: "include",
     });
-    checkAuth();
-    // const response = await fetch("http://localhost:5000/users/logout", {
-    //   method: "GET",
-    //   redirect: "follow",
-    // });
-    // if (response.ok) {
-    //   checkAuth();
-    // }
-    // const cookieStore = cookies();
-    // cookieStore.delete("auth-token");
-    // checkAuth();
+
+    await checkAuth();
   };
 
   useEffect(() => {

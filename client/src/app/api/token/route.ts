@@ -14,5 +14,5 @@ export async function GET(request: NextRequest) {
 export async function POST() {
   const cookieStore = cookies();
   cookieStore.delete("auth-token");
-  return Response.json({ msg: "Worked" });
+  return Response.json({ msg: "Logging out successcull" });
 }
