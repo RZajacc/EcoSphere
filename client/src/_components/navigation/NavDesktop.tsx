@@ -47,7 +47,7 @@ function NavDesktop() {
             className={`${!showDropdown ? "hidden" : ""} absolute right-7 top-12 w-40 rounded-md border border-zinc-300 p-2`}
           >
             <NavigationLink path="/" title="Home" callback={toggleDropdown} />
-            <NavigationLink path="/" title="Logout" callback={logout} />
+            <NavigationLink path="/" title="Log out" callback={logout} />
           </ul>
         </section>
       ) : (

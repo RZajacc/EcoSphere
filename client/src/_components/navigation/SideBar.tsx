@@ -2,6 +2,8 @@ import cancelImage from "@/assets/cancel-svgrepo-com.svg";
 import { SetStateAction } from "react";
 import Image from "next/image";
 import MobileNavLink from "../ui/navigation/MobileNavLink";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/context/AuthContext";
 
 type Props = {
   sideBarActive: boolean;
@@ -9,6 +11,8 @@ type Props = {
 };
 
 function SideBar({ sideBarActive, setSideBarActive }: Props) {
+  const { user, logout } = useContext(AuthContext);
+
   // Classes to manage display and transitions of sidebar and backdrop
   const sideBarShowClass =
     "fixed -left-1/2 top-0 z-20 h-full w-1/2 translate-x-full bg-white duration-700 ease-out";
@@ -38,12 +42,26 @@ function SideBar({ sideBarActive, setSideBarActive }: Props) {
           <MobileNavLink setSideBarActive={setSideBarActive} href="/">
             Home
           </MobileNavLink>
-          <MobileNavLink setSideBarActive={setSideBarActive} href="/login">
-            Login
-          </MobileNavLink>
-          <MobileNavLink setSideBarActive={setSideBarActive} href="/signup">
-            Signup
-          </MobileNavLink>
+          {user ? (
+            <>
+              <MobileNavLink
+                setSideBarActive={setSideBarActive}
+                callback={logout}
+                href="/"
+              >
+                Log out
+              </MobileNavLink>
+            </>
+          ) : (
+            <>
+              <MobileNavLink setSideBarActive={setSideBarActive} href="/login">
+                Login
+              </MobileNavLink>
+              <MobileNavLink setSideBarActive={setSideBarActive} href="/signup">
+                Signup
+              </MobileNavLink>
+            </>
+          )}
         </div>
       </div>
       {/* Backrop for the page */}

@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function NavMobile() {
   const [sideBarActive, setSideBarActive] = useState(false);
+
   return (
     <>
       <div className="py-4 sm:hidden">
