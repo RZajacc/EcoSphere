@@ -28,17 +28,18 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<User | undefined>(undefined);
   // Method checking if cookie is attached to the request
   const checkAuth = async () => {
-    const response = await fetch("/api/getToken", {
+    const response = await fetch("/api/token", {
       method: "GET",
       credentials: "include",
     });
     // Get the value of the token if it exists
-    const token: string | undefined = await response.json();
+    const token: { authorized: boolean; token: string | undefined } =
+      await response.json();
 
     //   Get user data
-    if (token) {
+    if (token.authorized) {
       const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
+      myHeaders.append("Authorization", `Bearer ${token.token}`);
 
       const response = await fetch("http://localhost:5000/users/getUser", {
         method: "GET",
@@ -56,8 +57,8 @@ export const AuthContextProvider = ({
   };
 
   const logout = async () => {
-    const response = await fetch("/api/clearToken", {
-      method: "GET",
+    const response = await fetch("/api/token", {
+      method: "POST",
       credentials: "include",
     });
     checkAuth();
