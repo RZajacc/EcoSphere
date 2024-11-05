@@ -1,5 +1,10 @@
 "use client";
-import { createContext, SetStateAction, useEffect, useState } from "react";
+import React, {
+  createContext,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { User } from "../../types/UserTypes";
 import { cookies } from "next/headers";
 
@@ -9,6 +14,8 @@ type AuthContextType = {
   setUser: React.Dispatch<SetStateAction<User | undefined>>;
   revalidateUser: () => Promise<void>;
   logout: () => Promise<void>;
+  showDropdown: boolean;
+  toggleDropdown: () => void;
 };
 // Init value for the context
 const AuthContextInit: AuthContextType = {
@@ -16,6 +23,8 @@ const AuthContextInit: AuthContextType = {
   setUser: async () => undefined,
   revalidateUser: async () => undefined,
   logout: async () => undefined,
+  showDropdown: false,
+  toggleDropdown: () => undefined,
 };
 
 export const AuthContext = createContext<AuthContextType>(AuthContextInit);
@@ -27,6 +36,12 @@ export const AuthContextProvider = ({
 }) => {
   // State variables
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  //? ------------TOGGLE NAVBAR DROPDOWN---------------
+  const toggleDropdown = () => {
+    setShowDropdown((prevVal) => !prevVal);
+  };
 
   //? ------------CHECK IF USER IS AUTHENTICATED---------------
   const checkAuth = async () => {
@@ -63,6 +78,7 @@ export const AuthContextProvider = ({
   //? ------------REVALIDATE USER METHOD---------------
   const revalidateUser = async () => {
     await checkAuth();
+    setShowDropdown(false);
   };
 
   //? -----------LOGOUT METHOD---------------
@@ -73,6 +89,7 @@ export const AuthContextProvider = ({
     });
 
     revalidateUser();
+    setShowDropdown(false);
   };
 
   useEffect(() => {
@@ -80,7 +97,16 @@ export const AuthContextProvider = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, revalidateUser, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        revalidateUser,
+        logout,
+        showDropdown,
+        toggleDropdown,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

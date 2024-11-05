@@ -10,12 +10,9 @@ import Image from "next/image";
 import NavigationLink from "./NavigationLink";
 
 function NavDesktop() {
-  const { user, logout } = useContext(AuthContext);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { user, logout, showDropdown, toggleDropdown } =
+    useContext(AuthContext);
 
-  const toggleDropdown = () => {
-    setShowDropdown((prevVal) => !prevVal);
-  };
   return (
     <div className="hidden items-center justify-between py-4 sm:flex">
       <section>
