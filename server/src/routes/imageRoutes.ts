@@ -1,14 +1,9 @@
 import { Router } from "express";
 import upload from "../middlewares/multer";
+import { uploadImage } from "../controller/imagesController";
 
 const router = Router();
 
-router.post("/upload", upload.single("userImage"), (req, res) => {
-  console.log("REQUEST FILE", req.file);
-  console.log("REQUEST BODY", req.body);
-  res.status(200).json({
-    msg: "Working",
-  });
-});
+router.post("/upload", upload.single("userImage"), uploadImage);
 
 export default router;
