@@ -2,12 +2,12 @@ import { Request } from "express";
 import multer, { FileFilterCallback } from "multer";
 import path from "path";
 
-const storage = multer.diskStorage({
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + uniqueSuffix);
-  },
-});
+// const storage = multer.diskStorage({
+//   filename: (req, file, cb) => {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, file.fieldname + uniqueSuffix);
+//   },
+// });
 
 const fileFilter = (
   req: Request,
@@ -27,6 +27,9 @@ const fileFilter = (
   }
 };
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: fileFilter,
+});
 
 export default upload;
