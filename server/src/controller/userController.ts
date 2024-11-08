@@ -5,7 +5,7 @@ import { QueryResult } from "pg";
 import jwt from "jsonwebtoken";
 import { User } from "../types/UserTypes";
 
-export const signup: RequestHandler = async (req, res) => {
+const signup: RequestHandler = async (req, res) => {
   const inputs: { userName: string; email: string; password: string } =
     req.body;
 
@@ -60,7 +60,7 @@ export const signup: RequestHandler = async (req, res) => {
   }
 };
 
-export const login: RequestHandler = async (req, res) => {
+const login: RequestHandler = async (req, res) => {
   const inputs: { email: string; password: string } = req.body;
 
   // Check if the user exists in the database
@@ -121,7 +121,7 @@ export const login: RequestHandler = async (req, res) => {
   }
 };
 
-export const getUser: RequestHandler = (req, res) => {
+const getUser: RequestHandler = (req, res) => {
   // Get user from the request
   const user = req.user;
 
@@ -135,4 +135,4 @@ export const getUser: RequestHandler = (req, res) => {
   }
 };
 
-export default { signup, login, getUser };
+export { signup, login, getUser };

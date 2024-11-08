@@ -3,7 +3,7 @@ import * as db from "../db/index";
 import { QueryResult } from "pg";
 import { EventByDate, EventByTitle } from "../types/EventTypes";
 
-export const getAllEventsByDate: RequestHandler = async (req, res) => {
+const getAllEventsByDate: RequestHandler = async (req, res) => {
   // Getting inputs from the request
   const inputs: { date: string } = req.body;
 
@@ -26,7 +26,7 @@ export const getAllEventsByDate: RequestHandler = async (req, res) => {
   }
 };
 
-export const getEventByTitle: RequestHandler = async (req, res) => {
+const getEventByTitle: RequestHandler = async (req, res) => {
   const inputs: { title: string } = req.body;
   try {
     const result: void | QueryResult<EventByTitle> = await db.query(`
@@ -53,4 +53,4 @@ export const getEventByTitle: RequestHandler = async (req, res) => {
   }
 };
 
-export default { getAllEventsByDate, getEventByTitle };
+export { getAllEventsByDate, getEventByTitle };

@@ -63,10 +63,40 @@ const uploadImage: RequestHandler = async (req, res) => {
   }
 };
 
-const updateImageOwner: RequestHandler = (req, res) => {
-  res.status(200).json({
-    msg: "test",
-  });
+const updateImageOwner: RequestHandler = async (req, res) => {
+  // Define inputs
+  const inputs: { user_id?: number; event_id?: number; image_id: number } =
+    req.body;
+
+  // Prepare an object to simplify query
+  let valueToUpdate: { varName: string; value: number | undefined };
+
+  // If both user and event id's are provided return an error
+  if (inputs.user_id && inputs.event_id) {
+    res.status(500).json({
+      err: "You can update only one value but you have provided both!",
+    });
+  } else {
+    // Assign value to be updated
+    valueToUpdate = {
+      varName: inputs.user_id ? "user_id" : "event_id",
+      value: inputs.user_id ? inputs.user_id : inputs.event_id,
+    };
+
+    // Perform update of the image object
+    try {
+      const result: QueryResult | void = await db.query(
+        `UPDATE images SET ${valueToUpdate.varName} = ${valueToUpdate.value} WHERE image_id = ${inputs.image_id}`
+      );
+      if (result) {
+        res.status(200).json({
+          msg: "Update successcull",
+        });
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 };
 
 export { uploadImage, updateImageOwner };
