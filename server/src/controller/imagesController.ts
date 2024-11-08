@@ -8,6 +8,9 @@ const storage = new Storage({ projectId: process.env.PROJECT_ID });
 const bucketName = "ecosphere-images";
 
 const uploadImage: RequestHandler = async (req, res) => {
+  // Define inputs
+  const inputs: { folder?: string } = req.body;
+
   if (!req.file) {
     res.status(404).json({
       msg: "No file was provided!",
@@ -21,7 +24,7 @@ const uploadImage: RequestHandler = async (req, res) => {
     try {
       await storage
         .bucket(bucketName)
-        .file("userImages/" + destFileName)
+        .file(`${inputs.folder ? inputs.folder + "/" : ""}` + destFileName)
         .save(contents);
     } catch (error) {
       res.status(500).json(error);
@@ -33,7 +36,9 @@ const uploadImage: RequestHandler = async (req, res) => {
     const format = tags["Format"].value;
     const width = tags["Image Width"]?.value;
     const height = tags["Image Height"]?.value;
-    const imageURL = `https://storage.googleapis.com/ecosphere-images/${destFileName}`;
+    const imageURL = `https://storage.googleapis.com/ecosphere-images/${
+      inputs.folder ? inputs.folder + "/" : ""
+    }${destFileName}`;
     // Save image in the database
     try {
       const result: QueryResult<{ image_id: number }> | void = await db.query(
