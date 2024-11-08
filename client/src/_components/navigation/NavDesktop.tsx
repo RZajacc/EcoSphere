@@ -32,10 +32,11 @@ function NavDesktop() {
         <section className="relative">
           <button className="mr-7 flex items-center" onClick={toggleDropdown}>
             <Image
-              src={noUserImg}
-              alt="No user image"
-              width={42}
-              className="rounded-full"
+              src={user.image.public_url ? user.image.public_url : noUserImg}
+              alt="user image"
+              width={user.image.width ? user.image.width : 42}
+              height={user.image.height ? user.image.height : 42}
+              className="h-11 w-11 rounded-full"
             />
             <Image
               src={showDropdown ? pointerUp : pointerDown}

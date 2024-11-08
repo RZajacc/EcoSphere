@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/photos/**",
       },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        port: "",
+        pathname: "/ecosphere-images/**",
+      },
     ],
   },
 };
