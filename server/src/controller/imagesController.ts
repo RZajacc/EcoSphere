@@ -63,4 +63,10 @@ const uploadImage: RequestHandler = async (req, res) => {
   }
 };
 
-export { uploadImage };
+const updateImageOwner: RequestHandler = (req, res) => {
+  res.status(200).json({
+    msg: "test",
+  });
+};
+
+export { uploadImage, updateImageOwner };
