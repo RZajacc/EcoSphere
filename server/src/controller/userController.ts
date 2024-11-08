@@ -144,8 +144,7 @@ const updateImage: RequestHandler = async (req, res) => {
   } else {
     // Define inputs
     const inputs: { image_id: number } = req.body;
-
-    // Updated users image
+    // Update users image
     try {
       const result: QueryResult | void = await db.query(
         `UPDATE users SET image_id=${inputs.image_id} WHERE user_id=${user.user_id}`
