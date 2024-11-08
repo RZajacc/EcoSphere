@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { getUser, login, signup } from "../controller/userController";
+import {
+  getUser,
+  login,
+  signup,
+  updateImage,
+} from "../controller/userController";
 import passport from "../config/passport";
 
 const router = Router();
@@ -11,5 +16,6 @@ router.get(
 );
 router.post("/login", login);
 router.put("/signup", signup);
+router.patch("/updateImage", updateImage);
 
 export default router;

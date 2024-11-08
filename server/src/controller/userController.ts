@@ -135,4 +135,8 @@ const getUser: RequestHandler = (req, res) => {
   }
 };
 
-export { signup, login, getUser };
+const updateImage: RequestHandler = (req, res) => {
+  res.status(200).json({ msg: "test" });
+};
+
+export { signup, login, getUser, updateImage };
