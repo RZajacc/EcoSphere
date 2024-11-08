@@ -109,6 +109,7 @@ const login: RequestHandler = async (req, res) => {
             });
             res.status(201).json({
               msg: "Login successfull",
+              token: token,
             });
           } else {
             res.status(401).json({ msg: "Password is incorrect!" });
@@ -135,8 +136,27 @@ const getUser: RequestHandler = (req, res) => {
   }
 };
 
-const updateImage: RequestHandler = (req, res) => {
-  res.status(200).json({ msg: "test" });
+const updateImage: RequestHandler = async (req, res) => {
+  const user = req.user;
+  // Return an error if user is not authorized
+  if (!user) {
+    res.status(401).json({ err: "You are not authorized to do that!" });
+  } else {
+    // Define inputs
+    const inputs: { image_id: number } = req.body;
+
+    // Updated users image
+    try {
+      const result: QueryResult | void = await db.query(
+        `UPDATE users SET image_id=${inputs.image_id} WHERE user_id=${user.user_id}`
+      );
+      if (result) {
+        res.status(200).json({ msg: "Update successfull!" });
+      }
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
 };
 
 export { signup, login, getUser, updateImage };

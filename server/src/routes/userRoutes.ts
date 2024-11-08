@@ -16,6 +16,10 @@ router.get(
 );
 router.post("/login", login);
 router.put("/signup", signup);
-router.patch("/updateImage", updateImage);
+router.patch(
+  "/updateImage",
+  passport.authenticate("jwt", { session: false }),
+  updateImage
+);
 
 export default router;
