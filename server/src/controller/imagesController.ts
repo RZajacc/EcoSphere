@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Storage } from "@google-cloud/storage";
+import ExifReader from "exifreader";
 
 const storage = new Storage({ projectId: process.env.PROJECT_ID });
 const bucketName = "ecosphere-images";
@@ -11,20 +12,28 @@ const uploadImage: RequestHandler = async (req, res) => {
       msg: "No file was provided!",
     });
   }
+
   const destFileName = req.file!.originalname;
   const contents = req.file!.buffer;
 
-  const image = await storage
-    .bucket(bucketName)
-    .file(destFileName)
-    .save(contents);
+  // const image = await storage
+  //   .bucket(bucketName)
+  //   .file("userImages/" + destFileName)
+  //   .save(contents);
   // console.log(
   //   `${destFileName} with contents ${contents} uploaded to ${bucketName}.`
   // );
-  // console.log(req.file);
+
+  // Extract image metadata
+  const tags = ExifReader.load(contents);
+  // Image metdatada
+  const format = tags["Format"].value;
+  const width = tags["Image Width"]?.value;
+  const height = tags["Image Height"]?.value;
+
   res.status(200).json({
     msg: "Working",
-    image,
+    // image,
   });
 };
 

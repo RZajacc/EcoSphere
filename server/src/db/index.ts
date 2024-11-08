@@ -34,6 +34,16 @@ const createTables = async () => {
 	    CONSTRAINT user_events_pk
 		    PRIMARY KEY (user_id, event_id)	
     );
+    CREATE TABLE IF NOT EXISTS images(
+	    image_id INT GENERATED ALWAYS AS IDENTITY,
+	    user_id INT,
+	    event_id INT,
+	    format VARCHAR(50),
+	    width INT,
+	    height INT,
+	    imageURL VARCHAR(255),
+	    PRIMARY KEY(image_id)
+    );
   `;
   // Timing function for feedback
   const start = Date.now();
