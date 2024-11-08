@@ -41,7 +41,7 @@ const createTables = async () => {
 	    format VARCHAR(50),
 	    width INT,
 	    height INT,
-	    imageURL VARCHAR(255),
+	    imageurl VARCHAR(255),
 	    PRIMARY KEY(image_id)
     );
   `;
