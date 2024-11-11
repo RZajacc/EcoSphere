@@ -4,6 +4,7 @@ import * as db from "../db/index";
 import { QueryResult } from "pg";
 import jwt from "jsonwebtoken";
 import { User } from "../types/UserTypes";
+import { updateImageOwner, uploadImage } from "../services/imageService";
 
 const signup: RequestHandler = async (req, res) => {
   const inputs: { userName: string; email: string; password: string } =
@@ -141,19 +142,32 @@ const updateImage: RequestHandler = async (req, res) => {
   // Return an error if user is not authorized
   if (!user) {
     res.status(401).json({ err: "You are not authorized to do that!" });
-  } else {
-    // Define inputs
-    const inputs: { image_id: number } = req.body;
-    // Update users image
-    try {
+  }
+  // Check if file is there
+  const file = req.file;
+  if (!file) {
+    res.status(404).json({ err: "No file provided!" });
+  }
+  try {
+    // Upload an image
+    const imageId = await uploadImage(file!, "userImages");
+    // Update image's owner (event or user)
+    if (imageId) {
+      const msg = await updateImageOwner(imageId, undefined, 3);
+      // If image was uploaded
       const result: QueryResult | void = await db.query(
-        `UPDATE users SET image_id=${inputs.image_id} WHERE user_id=${user.user_id}`
+        `UPDATE users SET image_id=${imageId} WHERE user_id=${user!.user_id}`
       );
+
       if (result) {
         res.status(200).json({ msg: "Update successfull!" });
       }
-    } catch (error) {
-      res.status(500).json({ error });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Unexpected error!" });
     }
   }
 };

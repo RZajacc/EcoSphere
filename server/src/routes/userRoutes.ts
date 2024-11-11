@@ -6,6 +6,7 @@ import {
   updateImage,
 } from "../controller/userController";
 import passport from "../config/passport";
+import upload from "../middlewares/multer";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.put("/signup", signup);
 router.patch(
   "/updateImage",
   passport.authenticate("jwt", { session: false }),
+  upload.single("userImage"),
   updateImage
 );
 

@@ -33,6 +33,7 @@ function page() {
             src={user?.image.public_url ? user.image.public_url : noUser}
             width={user?.image.width ? user.image.width : 100}
             height={user?.image.height ? user.image.height : 100}
+            priority
             alt="user image"
             className="rounded-md"
           />
@@ -50,7 +51,7 @@ function page() {
               inputRef.current?.click();
             }}
           >
-            <span>Change profile image</span>
+            Change profile image
           </button>
           <h2 className="absolute bottom-10 left-4 text-3xl font-semibold text-white">
             {user?.user_name}
