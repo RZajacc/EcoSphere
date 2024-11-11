@@ -36,7 +36,7 @@ function NavDesktop() {
               alt="user image"
               width={user.image.width ? user.image.width : 42}
               height={user.image.height ? user.image.height : 42}
-              className="h-11 w-11 rounded-full"
+              className="h-12 w-12 rounded-full"
             />
             <Image
               src={showDropdown ? pointerUp : pointerDown}

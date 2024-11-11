@@ -138,22 +138,28 @@ const getUser: RequestHandler = (req, res) => {
 };
 
 const updateImage: RequestHandler = async (req, res) => {
+  // Prepare inputs and check if user is present
+  const inputs: { folder?: string } = req.body;
   const user = req.user;
+  const file = req.file;
+
   // Return an error if user is not authorized
   if (!user) {
     res.status(401).json({ err: "You are not authorized to do that!" });
   }
-  // Check if file is there
-  const file = req.file;
+
+  // If file is not available return an error
   if (!file) {
     res.status(404).json({ err: "No file provided!" });
   }
+
+  // Proceed with updating user image
   try {
     // Upload an image
-    const imageId = await uploadImage(file!, "userImages");
+    const imageId = await uploadImage(file!, inputs.folder);
     // Update image's owner (event or user)
     if (imageId) {
-      const msg = await updateImageOwner(imageId, undefined, 3);
+      const msg = await updateImageOwner(imageId, user?.user_id);
       // If image was uploaded
       const result: QueryResult | void = await db.query(
         `UPDATE users SET image_id=${imageId} WHERE user_id=${user!.user_id}`

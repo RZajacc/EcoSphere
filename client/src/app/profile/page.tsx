@@ -5,29 +5,15 @@ import { useContext, useRef } from "react";
 import noUser from "../../assets/noUser.png";
 
 function page() {
-  const { user } = useContext(AuthContext);
+  const { user, revalidateUser } = useContext(AuthContext);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files;
-
-    if (image) {
-      const formdata = new FormData();
-      formdata.append("userImage", image[0]);
-
-      const response = await fetch("http://localhost:5000/images/upload", {
-        method: "POST",
-        body: formdata,
-        redirect: "follow",
-      });
-      if (response.ok) {
-        console.log("IT was really ok");
-      }
-    }
   };
   return (
     <div className="h-full bg-gray-100 py-6">
-      <div className="mx-auto grid w-2/3 rounded-md bg-white p-3">
+      <div className="mx-auto grid w-2/3 rounded-md bg-white p-3 md:w-2/5">
         <section className="relative mx-auto w-4/5">
           <Image
             src={user?.image.public_url ? user.image.public_url : noUser}
