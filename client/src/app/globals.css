@@ -47,6 +47,6 @@ footer {
 
 @media (min-width: 640px) {
   body {
-    grid-template-rows: 64px auto 84px;
+    grid-template-rows: 76px auto 84px;
   }
 }
