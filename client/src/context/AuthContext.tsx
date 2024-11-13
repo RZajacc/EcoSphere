@@ -15,6 +15,7 @@ type AuthContextType = {
   revalidateUser: () => Promise<void>;
   logout: () => Promise<void>;
   showDropdown: boolean;
+  setShowDropdown: React.Dispatch<SetStateAction<boolean>>;
   toggleDropdown: () => void;
 };
 // Init value for the context
@@ -24,6 +25,7 @@ const AuthContextInit: AuthContextType = {
   revalidateUser: async () => undefined,
   logout: async () => undefined,
   showDropdown: false,
+  setShowDropdown: () => undefined,
   toggleDropdown: () => undefined,
 };
 
@@ -104,6 +106,7 @@ export const AuthContextProvider = ({
         revalidateUser,
         logout,
         showDropdown,
+        setShowDropdown,
         toggleDropdown,
       }}
     >

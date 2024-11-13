@@ -6,9 +6,9 @@ import noUser from "../../assets/noUser.png";
 
 function page() {
   const { user, revalidateUser } = useContext(AuthContext);
-  const inputRef = useRef<HTMLInputElement>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadErr, setUploadErr] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // Get images list
