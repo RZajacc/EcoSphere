@@ -60,6 +60,9 @@ function Dropdown({ user }: Props) {
         onClick={() => {
           setShowDropdown(false);
         }}
+        onScroll={() => {
+          setShowDropdown(false);
+        }}
       >
         as
       </div>
