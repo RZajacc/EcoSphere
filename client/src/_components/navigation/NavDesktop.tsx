@@ -19,9 +19,8 @@ function NavDesktop() {
         </Link>
       </section>
 
-      <section>
-        <SearchBar />
-      </section>
+      {/* Search bar */}
+      <SearchBar />
 
       {/* Render different elemenets depending on user status */}
       <Dropdown user={user} />
