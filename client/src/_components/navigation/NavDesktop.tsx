@@ -1,16 +1,12 @@
 "use client";
 import Link from "next/link";
 import SearchBar from "@/_components/ui/navigation/SearchBar";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
-
-import Image from "next/image";
-import NavigationLink from "./NavigationLink";
 import Dropdown from "./Dropdown";
 
 function NavDesktop() {
-  const { user, logout, showDropdown, toggleDropdown } =
-    useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="hidden items-center justify-between py-4 sm:flex">
