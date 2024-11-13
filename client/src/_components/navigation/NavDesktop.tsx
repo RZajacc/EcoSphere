@@ -31,13 +31,15 @@ function NavDesktop() {
       {user ? (
         <section className="relative">
           <button className="mr-7 flex items-center" onClick={toggleDropdown}>
-            <Image
-              src={user.image.public_url ? user.image.public_url : noUserImg}
-              alt="user image"
-              width={user.image.width ? user.image.width : 42}
-              height={user.image.height ? user.image.height : 42}
-              className="h-12 w-12 rounded-full"
-            />
+            <span className="h-12 w-12 overflow-hidden rounded-full">
+              <Image
+                src={user.image.public_url ? user.image.public_url : noUserImg}
+                alt="user image"
+                width={user.image.width ? user.image.width : 42}
+                height={user.image.height ? user.image.height : 42}
+                className="h-full w-full object-cover"
+              />
+            </span>
             <Image
               src={showDropdown ? pointerUp : pointerDown}
               alt="Pointer down"

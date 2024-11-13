@@ -151,29 +151,29 @@ const updateImage: RequestHandler = async (req, res) => {
   // If file is not available return an error
   if (!file) {
     res.status(404).json({ err: "No file provided!" });
-  }
+  } else {
+    // Proceed with updating user image
+    try {
+      // Upload an image
+      const imageId = await uploadImage(file!, inputs.folder);
+      // Update image's owner (event or user)
+      if (imageId) {
+        const msg = await updateImageOwner(imageId, user?.user_id);
+        // If image was uploaded
+        const result: QueryResult | void = await db.query(
+          `UPDATE users SET image_id=${imageId} WHERE user_id=${user!.user_id}`
+        );
 
-  // Proceed with updating user image
-  try {
-    // Upload an image
-    const imageId = await uploadImage(file!, inputs.folder);
-    // Update image's owner (event or user)
-    if (imageId) {
-      const msg = await updateImageOwner(imageId, user?.user_id);
-      // If image was uploaded
-      const result: QueryResult | void = await db.query(
-        `UPDATE users SET image_id=${imageId} WHERE user_id=${user!.user_id}`
-      );
-
-      if (result) {
-        res.status(200).json({ msg: "Update successfull!" });
+        if (result) {
+          res.status(200).json({ msg: "Update successfull!" });
+        }
       }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Unexpected error!" });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ msg: error.message });
+      } else {
+        res.status(500).json({ msg: "Unexpected error!" });
+      }
     }
   }
 };
