@@ -4,7 +4,11 @@ import * as db from "../db/index";
 import { QueryResult } from "pg";
 import jwt from "jsonwebtoken";
 import { User } from "../types/UserTypes";
-import { updateImageOwner, uploadImage } from "../services/imageService";
+import {
+  updateImageOwner,
+  updateUserImg,
+  uploadImage,
+} from "../services/imageService";
 
 const signup: RequestHandler = async (req, res) => {
   const inputs: { userName: string; email: string; password: string } =
@@ -160,13 +164,10 @@ const updateImage: RequestHandler = async (req, res) => {
       if (imageId) {
         const msg = await updateImageOwner(imageId, user?.user_id);
         // If image was uploaded
-        const result: QueryResult | void = await db.query(
-          `UPDATE users SET image_id=${imageId} WHERE user_id=${user!.user_id}`
-        );
+        const x = await updateUserImg(imageId, user!.user_id);
 
-        if (result) {
-          res.status(200).json({ msg: "Update successfull!" });
-        }
+        // If no error was thrown then return a message
+        res.status(200).json({ msg: "Update successfull!" });
       }
     } catch (error) {
       if (error instanceof Error) {

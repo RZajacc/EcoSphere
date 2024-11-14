@@ -39,6 +39,7 @@ const createTables = async () => {
 	    image_id INT GENERATED ALWAYS AS IDENTITY,
 	    user_id INT,
 	    event_id INT,
+      name VARCHAR(100),
 	    format VARCHAR(50),
 	    width INT,
 	    height INT,

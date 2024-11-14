@@ -35,10 +35,11 @@ export const uploadImage = async (
   const imageURL = `https://storage.googleapis.com/ecosphere-images/${
     folder ? folder + "/" : ""
   }${destFileName}`;
+  const name = folder + "/" + destFileName;
   // Save image in the database
   try {
     const result: QueryResult<{ image_id: number }> | void = await db.query(
-      `INSERT INTO images (format, width, height, imageurl) VALUES ('${format}', ${width}, ${height}, '${imageURL}') RETURNING image_id`
+      `INSERT INTO images (name, format, width, height, imageurl) VALUES ('${name}', '${format}', ${width}, ${height}, '${imageURL}') RETURNING image_id`
     );
 
     if (result && result.rowCount != 0) {
@@ -84,5 +85,57 @@ export const updateImageOwner = async (
     } catch (error) {
       console.log(error);
     }
+  }
+};
+
+export const updateUserImg = async (imageId: number, userId: number) => {
+  try {
+    // Check if the user already have an image stored in the db
+    const userImageId: QueryResult<{ image_id: number }> | void =
+      await db.query(`SELECT image_id FROM users WHERE user_id=${userId}`);
+
+    // If yes delete old image from google cloud and update it with the new one
+    if (userImageId && userImageId.rows[0].image_id !== null) {
+      const imageIdToDelete = userImageId.rows[0].image_id;
+
+      // Get image name for the file you wish to delete
+      const imageName: QueryResult<{ name: string }> | void = await db.query(
+        `SELECT name FROM images where image_id=${imageIdToDelete}`
+      );
+
+      if (imageName && imageName.rowCount != 0) {
+        const fileName = imageName.rows[0].name;
+
+        //  Get file metadata from GCP
+        const [metadata] = await storage
+          .bucket(bucketName)
+          .file(fileName)
+          .getMetadata();
+
+        // Delete the file
+        const deleteOptions = {
+          ifGenerationMatch: metadata.generation,
+        };
+
+        await storage.bucket(bucketName).file(fileName).delete(deleteOptions);
+
+        // Else just add new image id to the user
+        const result: QueryResult | void = await db.query(
+          `UPDATE users SET image_id=${imageId} WHERE user_id=${userId}`
+        );
+
+        // Delete previous image from the DB
+        const deleteResult: QueryResult | void = await db.query(
+          `DELETE FROM images WHERE image_id=${imageIdToDelete}`
+        );
+      }
+    } else {
+      // Else just add new image id to the user
+      const result: QueryResult | void = await db.query(
+        `UPDATE users SET image_id=${imageId} WHERE user_id=${userId}`
+      );
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
