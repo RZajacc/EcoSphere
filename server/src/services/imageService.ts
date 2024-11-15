@@ -136,6 +136,10 @@ export const updateUserImg = async (imageId: number, userId: number) => {
       );
     }
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      throw new Error("Failed uploading image: " + error.message);
+    } else {
+      throw new Error("Failed uploading image");
+    }
   }
 };

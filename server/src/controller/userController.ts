@@ -162,9 +162,11 @@ const updateImage: RequestHandler = async (req, res) => {
       const imageId = await uploadImage(file!, inputs.folder);
       // Update image's owner (event or user)
       if (imageId) {
-        const msg = await updateImageOwner(imageId, user?.user_id);
+        // Update image owner id
+        await updateImageOwner(imageId, user?.user_id);
+
         // If image was uploaded
-        const x = await updateUserImg(imageId, user!.user_id);
+        await updateUserImg(imageId, user!.user_id);
 
         // If no error was thrown then return a message
         res.status(200).json({ msg: "Update successfull!" });
