@@ -1,6 +1,7 @@
 # Server
 
-It is a REST application that serves connection with a PostgreSQL database. At this moment it doesnt use any external file storage (although im planning S3), or authentication (JWT planned). To make it run properly please follow the instructions below.
+It is a REST application that serves connection with a PostgreSQL database. At this moment it uses JWT for authenticating user together with passport, 
+and stores images on google cloud storage. Deploymend is also planned with GCP. To make it run properly please follow the instructions below.
 
 ### Project requirements:
 
